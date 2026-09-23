@@ -1,0 +1,250 @@
+hwrun: 22:00:45 lock taken by pid 847765 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac06f820
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55784055 SH4 cycles
+samples 44100: 199492246 SH4 cycles
+nop_n64                          done    314041
+nop_n576                         done    2775013
+mul_m1_n64                       done    133929
+mul_m1_n576                      done    1152907
+mul_m2_n64                       done    133941
+mul_m2_n576                      done    1152999
+mul_m3_n64                       done    133935
+mul_m3_n576                      done    1152941
+mul_m4_n64                       done    133831
+mul_m4_n576                      done    1152939
+mul_m5_n64                       done    169369
+mul_m5_n576                      done    1472141
+mul_m6_n64                       done    169325
+mul_m6_n576                      done    1472067
+mul_m7_n64                       done    169261
+mul_m7_n576                      done    1472183
+mul_m8_n64                       done    169369
+mul_m8_n576                      done    1472095
+mul_m9_n64                       done    205853
+mul_m9_n576                      done    1800507
+mul_m10_n64                      done    205805
+mul_m10_n576                     done    1800533
+mul_m11_n64                      done    205753
+mul_m11_n576                     done    1800541
+mul_m12_n64                      done    205911
+mul_m12_n576                     done    1800451
+mul_m13_n64                      done    241675
+mul_m13_n576                     done    2123553
+mul_m14_n64                      done    241715
+mul_m14_n576                     done    2123473
+mul_m15_n64                      done    241693
+mul_m15_n576                     done    2123553
+mul_m16_n64                      done    241745
+mul_m16_n576                     done    2123561
+rsh_n64                          done    242171
+rsh_n576                         done    2127287
+br_n64                           done    241721
+br_n576                          done    2123469
+ldr_n64                          done    206771
+ldr_n576                         done    1810295
+ldr_seq_n64                      done    206825
+ldr_seq_n576                     done    1810339
+ldr_far_n64                      done    206871
+ldr_far_n576                     done    1810251
+ldrb_n64                         done    206841
+ldrb_n576                        done    1810363
+str_n64                          done    169341
+str_n576                         done    1472159
+str_seq_n64                      done    169397
+str_seq_n576                     done    1472089
+strb_n64                         done    169339
+strb_n576                        done    1472131
+swp_n64                          done    241777
+swp_n576                         done    2123579
+ldm1_n64                         done    115551
+ldm1_n576                        done    988299
+stm1_n64                         done    96965
+stm1_n576                        done    820675
+ldm2_n64                         done    151173
+ldm2_n576                        done    1309289
+stm2_n64                         done    133125
+stm2_n576                        done    1146403
+ldm3_n64                         done    188319
+ldm3_n576                        done    1642551
+stm3_n64                         done    169313
+stm3_n576                        done    1472069
+ldm4_n64                         done    224703
+ldm4_n576                        done    1970151
+stm4_n64                         done    205475
+stm4_n576                        done    1797797
+ldm5_n64                         done    261473
+ldm5_n576                        done    2301851
+stm5_n64                         done    241753
+stm5_n576                        done    2123493
+ldm6_n64                         done    296037
+ldm6_n576                        done    2612081
+stm6_n64                         done    277889
+stm6_n576                        done    2449211
+ldm7_n64                         done    334571
+ldm7_n576                        done    2959507
+stm7_n64                         done    314083
+stm7_n576                        done    2774965
+ldm8_n64                         done    369445
+ldm8_n576                        done    3273193
+stm8_n64                         done    350261
+stm8_n576                        done    3100633
+ldr_reg_n64                      done    205801
+ldr_reg_n576                     done    1800511
+str_reg_n64                      done    169377
+str_reg_n576                     done    1472145
+ldr_mul_m1_n64                   done    169487
+ldr_mul_m1_n576                  done    1472155
+ldr_mul_m2_n64                   done    169371
+ldr_mul_m2_n576                  done    1472145
+ldr_mul_m3_n64                   done    169331
+ldr_mul_m3_n576                  done    1472179
+ldr_mul_m4_n64                   done    169295
+ldr_mul_m4_n576                  done    1472137
+ldr_mul_m5_n64                   done    188261
+ldr_mul_m5_n576                  done    1642563
+ldr_mul_m6_n64                   done    188243
+ldr_mul_m6_n576                  done    1642563
+ldr_mul_m7_n64                   done    188243
+ldr_mul_m7_n576                  done    1642611
+ldr_mul_m8_n64                   done    188251
+ldr_mul_m8_n576                  done    1642563
+str_mul_m1_n64                   done    151239
+str_mul_m1_n576                  done    1309259
+str_mul_m2_n64                   done    151205
+str_mul_m2_n576                  done    1309287
+str_mul_m3_n64                   done    151179
+str_mul_m3_n576                  done    1309285
+str_mul_m4_n64                   done    151223
+str_mul_m4_n576                  done    1309323
+str_mul_m5_n64                   done    169383
+str_mul_m5_n576                  done    1472179
+str_mul_m6_n64                   done    169331
+str_mul_m6_n576                  done    1472099
+str_mul_m7_n64                   done    169329
+str_mul_m7_n576                  done    1472145
+str_mul_m8_n64                   done    169375
+str_mul_m8_n576                  done    1472117
+mulx_ffffffff_n64                done    241689
+mulx_ffffffff_n576               done    2123561
+mulx_fffffffe_n64                done    241671
+mulx_fffffffe_n576               done    2123467
+mulx_ffffff80_n64                done    241675
+mulx_ffffff80_n576               done    2123529
+mulx_ffff8000_n64                done    241635
+mulx_ffff8000_n576               done    2123467
+mulx_ff800000_n64                done    241701
+mulx_ff800000_n576               done    2123495
+mulx_80000000_n64                done    241693
+mulx_80000000_n576               done    2123505
+mulx_7fffffff_n64                done    241667
+mulx_7fffffff_n576               done    2123507
+mulx_00800000_n64                done    241745
+mulx_00800000_n576               done    2123505
+mulx_007fffff_n64                done    205853
+mulx_007fffff_n576               done    1800429
+mulx_00008000_n64                done    205785
+mulx_00008000_n576               done    1800455
+mulx_00007fff_n64                done    169315
+mulx_00007fff_n576               done    1472181
+mulx_00000080_n64                done    169385
+mulx_00000080_n576               done    1472207
+mulx_0000007f_n64                done    133891
+mulx_0000007f_n576               done    1152909
+mla_00000001_n64                 done    133825
+mla_00000001_n576                done    1152861
+mla_00000080_n64                 done    169387
+mla_00000080_n576                done    1472137
+mla_00008000_n64                 done    205873
+mla_00008000_n576                done    1800447
+mla_00800000_n64                 done    241731
+mla_00800000_n576                done    2123525
+mla_ffffffff_n64                 done    241693
+mla_ffffffff_n576                done    2123527
+swpb_n64                         done    241737
+swpb_n576                        done    2123535
+swp_rsh_n64                      done    188285
+swp_rsh_n576                     done    1642537
+rsh_ldr_n64                      done    169453
+rsh_ldr_n576                     done    1472287
+ldr_ldr_n64                      done    206791
+ldr_ldr_n576                     done    1810257
+swp_swp_n64                      done    241751
+swp_swp_n576                     done    2123483
+swi_n64                          done    242125
+swi_n576                         done    2123867
+und_n64                          done    261897
+und_n576                         done    2302233
+ldrpc_n64                        done    188243
+ldrpc_n576                       done    1642481
+addpc_n64                        done    133187
+addpc_n576                       done    1146467
+ldmpc_n64                        done    50017
+ldmpc_n576                       done    395627
+mix1_n64                         done    356007
+mix1_n576                        done    3151179
+mix2_n64                         done    328557
+mix2_n576                        done    2901739
+mix3_n64                         done    387901
+mix3_n576                        done    3441189
+mix4_n64                         done    388833
+mix4_n576                        done    3446167
+mix5_n64                         done    390717
+mix5_n576                        done    3463945
+mix6_n64                         done    421603
+mix6_n576                        done    3741321
+mix7_n64                         done    337749
+mix7_n576                        done    2984443
+mix8_n64                         done    328299
+mix8_n576                        done    2902161
+mix9_n64                         done    335889
+mix9_n576                        done    2969787
+mix10_n64                        done    344397
+mix10_n576                       done    3046467
+mix11_n64                        done    347509
+mix11_n576                       done    3075263
+mix12_n64                        done    348933
+mix12_n576                       done    3085967
+mix13_n64                        done    304197
+mix13_n576                       done    2686585
+mix14_n64                        done    356509
+mix14_n576                       done    3154967
+mix15_n64                        done    324301
+mix15_n576                       done    2866379
+mix16_n64                        done    394873
+mix16_n576                       done    3500487
+smpswp64_n1024                   done    4640011
+smpswp64_n8192                   done    37067811
+smpswp72_n1024                   done    4641717
+smpswp72_n8192                   done    37066293
+smpcount_n1024                   done    4641917
+smpcount_n4096                   done    18537257
+216 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 637, dma_cntr = 429
+vid_set_mode: 640x480 VGA with 1 framebuffers.

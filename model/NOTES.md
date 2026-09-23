@@ -1,8 +1,8 @@
 # wren7 ARM7DI model -- notes
 
 The AICA's sound CPU is an ARM7DI (ARMv3: 32-bit and 26-bit modes, no Thumb, no halfword/signed transfers, no long
-multiply).  This model is the reference for the later RTL.  Status (2026-09-23): built from the data sheet, **nothing
-measured on the console yet**.  Everything below is either data sheet (section/table given), minicast, or an
+multiply).  This model is the reference for the later RTL.  Status (2026-09-23): built from the data sheet; console
+measurements started (see "Console measurements": bus timing per access class, multiplier, reset behaviour).  Everything below is either data sheet (section/table given), minicast, or an
 explicit model choice marked **[H#]** = open hardware question.
 
 Sources:
@@ -98,8 +98,8 @@ pc = instruction address; types are for cycles 1..k and then the type announced 
 - **[H3]** Bits 7 and 4 set in the data-processing space that don't match MUL/SWP (ARMv4 halfword and long-multiply
   encodings, "multiply with bit 6 set", 4.1 note): documented as *not* the undefined trap.  Model: bit 24 set ->
   SWP datapath, else MUL datapath, bits 6:5 ignored.  Pure guess; needs an encoding sweep.
-- **[H4]** MUL/MLA with S: C is "meaningless".  Model default: carry out of the last add/sub Booth step (0 when that
-  step was a pass).  `Arm7DI::mul_carry` also has KEEP and SHIFTER_LAST.  Sweep Rs/Rm to pin it.
+- **[H4] resolved on the console**: MULS/MLAS C = the shifter carry of the last Booth step (see Console
+  measurements).
 - **[H5]** Empty LDM/STM list: model = ARM7TDMI behaviour (R15 transferred, base +/- 0x40).
 - **[H6]** SPSR access in user mode (MRS/MSR SPSR, data-op-to-PC with S, LDM^ with PC): model reads CPSR and ignores
   writes / keeps the CPSR.
@@ -117,7 +117,7 @@ pc = instruction address; types are for cycles 1..k and then the type announced 
 - **[H11]** User-bank LDM/STM with write-back ("shall not"): the model writes back to the current bank's base.  The
   vendor LDM_5..8 tests do this in IRQ mode and expect the write-back.
 - **[H12]** Reset: register contents at power-on (model: 0) and across a reset (the model keeps them, per 3.5 only
-  R14_svc/SPSR_svc/CPSR change).  Dummy-fetch cycle types while nRESET is low.  Minicast loads GBA register values
+  R14_svc/SPSR_svc/CPSR change -- the console agrees that registers survive ARMRST, see Console measurements).  Dummy-fetch cycle types while nRESET is low.  Minicast loads GBA register values
   (VBA leftovers: R13 = 0x03007F00 ...), which are certainly not the AICA's.
 - **[H13]** Interrupts: FIQ synchroniser depth (ISYNC), the exact cycle at which the boundary check samples, and
   how long the AICA's L/M handshake takes to move nFIQ.  The model samples at the end of the last cycle, with no
@@ -155,7 +155,72 @@ ARM view, A[31:24] ignored (`addr &= 0x00FFFFFF`):
   internal).  **Default: zero waits.**  First console timing work: pin these from loops that are fetch-only,
   load-heavy, store-heavy and internal-heavy (MUL with large Rs).
 
-## minicast deviations (for reference, not used)
+## Console measurements (tests/hw/, 2026-09-23)
+
+Method: `hw/runner.c` (KOS) runs a job file (`tests/hw/<suite>/jobs.txt`; `./run_hw.sh SUITE`).  For each job, ARMRST
+is held while images and patches are loaded over G2.  Then MCIEB = SCPU only, t0 = PRFC0 (SH4 CPU cycles), ARMRST is
+released, and the SH4 polls SB_ISTEXT bit 1 (Holly, so the SH4 stays off the AICA bus) until the ARM's done stub
+(`hw/arm/stub.s`, 0x1FE000) writes MCIPD.SCPU.  The stub saves the registers to the result block at 0x1FF000.
+`tools/hwjob_model` runs the same job file on the model; `tools/hw_suite` / `tools/hw_timing` compare.  Every
+SH4-side wait is bounded (an unbounded one hung the console once and needed a power cycle).
+
+### Semantics
+
+- **Vendor suite** (tests/hw/vendor): 45/45; console and model agree on r1 and the exit path.  The 0xDEADBEEF end
+  word is patched to a branch to the stub.
+- **qemu_diff batches** (tests/hw/qemu_diff): 4000/4000 cases; console = qemu (sa1100) = model, every register,
+  flag and scratch word.
+- **Multiplier** (tests/hw/mulsem, `hw/arm/k_mulsem.s`, 1024 random records): MUL/MLA results, MUL with Rd == Rm
+  (zero), and **MLA with Rd == Rm ("meaningless") are bit-exact** with the model's 2-bit Booth datapath, which
+  re-reads Rm = Rd after every step.  **MULS/MLAS C = the barrel shifter's carry out on the last Booth step**
+  (Rm << 2k or 2k+1; LSL #0 passes the old C); N, Z as documented, V kept.  1024/1024; the model's default
+  (`MULC_SHIFTER_LAST`).  [H4 resolved]
+- **Registers survive ARMRST** (tests/hw/bringup): a kernel started with r0 = the value the previous run's stub
+  left.  R14_svc = the stub's spin address and SPSR_svc = the previous CPSR, as 3.5 describes.  The other registers
+  held power-on/BIOS leftovers.  [H12, partly]
+- STM of R15 stores the STM's address + 12 (the stub's own result block).
+
+### Clocks
+
+- **The ARM7DI core clock is 22.5792 MHz = 512 x 44.1 kHz**, the AICA bus clock (MAME: 33.8688 MHz x 2 / 3).
+  - Locked to the sample clock: SWP-only poll loops the model predicts exactly (`hw/arm/k_smpswp64/72.s`) see exactly
+    7.50000 and 6.66667 polls per sample, i.e. 512 MCLK per sample.
+  - Internal cycles run at the full clock.  MUL costs 8 + 4*ceil(m/4) MCLK with m = the data sheet's 2-bit Booth
+    count.  With I = 2 MCLK, m = 3 would already cost 16 (measured 12).  A slower core with a faster multiplier
+    would need the MLA Rd == Rm results to differ, and they match the 2-bit datapath.
+- The SH4 runs at 199.49 MHz on this console (4523.55 SH4 cycles per sample with interrupts off).  With interrupts
+  on, the SH4-side sample count misses about 1 edge in 470 (handlers longer than a sample).
+- minicast's `arm_sh4_bias = 2` (256 "ticks" per sample) is a rough stand-in for this; MAME clocks the whole core
+  at 2.8224 MHz, which is right for memory cycles and 8x too slow for internal ones.
+
+### Bus timing (tests/hw/timing, `tools/hw_timing gen|predict|check|fit|fitset`)
+
+Model: **`DcWaits::dreamcast()`** (slot-grid mode of `dc_arm_map`), now the default of `wren7run`:
+1. A memory cycle (N or S, read or write, byte or word, wave RAM or AICA register, any address) may start only on a
+   **4-MCLK grid point** and lasts **8 MCLK** (7 nWAIT).  No page mode and no N/S difference: sequential,
+   repeated or 512 KB-apart accesses all cost the same.
+2. The locked write of a **SWP/SWPB lasts 4** (SWP = 24 MCLK in all).
+3. Internal (I) cycles take **1 MCLK**; the next memory cycle waits for the next grid point.
+4. In every 512-MCLK sample frame, **two adjacent phase-4 half slots (t = 52 and 60 mod 512 from the reset release)
+   belong to another wave RAM user**.  An ARM wave RAM access that would start there waits for the ARM's own phase-0
+   slot; AICA register accesses are unaffected.  Phase 0 of the 8-MCLK period is always the ARM's.  The identity
+   is open; two SDRAM refreshes per sample (88,200/s) would fit.
+With all channels off (every channel's monitor reads 0x7FFF) and the DSP program zeroed, this predicts all 105
+kernels to within 0.1 MCLK per iteration (84 fit variants: total squared error 0.011 MCLK^2).  Validation used
+kernels not in the fit, predicted before the console run (`tests/hw/timing/PREDICT.txt`).  16 random instruction
+mixes (ALU, register shifts, MUL/MLA, LDR/STR[B], LDM/STM, SWP[B], AICA register reads/writes, branches,
+unexecuted instructions) all landed within 0.06 MCLK of 530-730-MCLK loops.  So did SWI + `movs pc, lr`, the
+undefined trap + return, LDR PC, a data op to PC and LDM {PC}.
+
+Open (timing):
+- **The blocked half slots' phase relative to the sample edge.**  The 512-iteration averages do not depend on it.
+  An exact cycle-by-cycle trace does, and so does whether ARMRST release is frame-synchronous: the run-to-run
+  spread of the slowed kernels is only a few MCLK, which suggests it is.
+- **Contention** with playing channels, DSP memory ops (MRD/MWT) and SH4/G2 accesses.  All measured here with the
+  sound generator idle and the SH4 off the bus.
+- **Interrupt timing**: FIQ latency through the L/M handshake, the synchroniser (H13).
+
+## minicast deviations (for reference, not used)## minicast deviations (for reference, not used)
 
 minicast's ARM core is vba-arm (a GBA ARM7TDMI interpreter).  It implements ARMv4 LDRH/STRH/LDRSB/LDRSH and BX,
 which the ARM7DI does not have (long multiplies are `#if 0`, "only on arm7tm").  It keeps no bus timing

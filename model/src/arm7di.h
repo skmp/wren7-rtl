@@ -104,9 +104,11 @@ public:
     FILE *bus_trace = nullptr;
     FILE *insn_trace = nullptr;
 
-    /* MUL/MLA with S: the data sheet leaves C "meaningless" (4.6.2).  Candidate rules, to be pinned on hardware. */
+    /* MUL/MLA with S: the data sheet leaves C "meaningless" (4.6.2).  Measured (tests/hw/mulsem, 1024/1024): C is the
+     * barrel shifter's carry out of the last Booth step (Rm << 2k or 2k+1; LSL #0 passes the old C).  The other rules
+     * stay selectable for comparisons. */
     enum MulCarry { MULC_KEEP = 0, MULC_ALU_LAST, MULC_SHIFTER_LAST };
-    MulCarry mul_carry = MULC_ALU_LAST;
+    MulCarry mul_carry = MULC_SHIFTER_LAST;
 
 private:
     struct Slot { uint32_t word; bool abort; };

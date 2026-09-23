@@ -467,7 +467,7 @@ void Arm7DI::exec_mul(uint32_t op)
         mul >>= 2;
         cyc(pc_, user_flag(), 0, k == m - 1 ? CYC_S : CYC_I);
         const int sh = 2 * k + ((d == 2 || d == -2) ? 1 : 0);
-        sh_c = sh ? ((M >> (32 - sh)) & 1) : 0;
+        sh_c = sh ? ((M >> (32 - sh)) & 1) : ((cpsr_ & PSR_C) ? 1 : 0);   /* LSL #0 passes C through */
         if (rdn != 15) acc = gpr_[phys(rdn, bank())];
         bool v;
         if (d > 0) acc = add(acc, M << sh, 0, alu_c, v);

@@ -28,6 +28,31 @@ struct DcWaits {
     uint32_t ram_wn = 0, ram_ws = 0;   /* wave RAM write, N / S cycle */
     uint32_t reg_r = 0, reg_w = 0;     /* AICA register read / write */
     uint32_t internal = 0;             /* I and C cycles */
+    /* Slot-grid mode (grid > 0): a memory cycle (N or S, any region) may only start on a multiple of `grid` MCLK
+     * and then lasts `access` MCLK; the LOCKed write of a SWP lasts `locked_write`.  I/C cycles take one MCLK.
+     * The fixed waits above are ignored in this mode. */
+    uint32_t grid = 0, access = 8, locked_write = 4;
+    /* Slot-grid mode: a memory cycle may not start at t with (t + block_phase) % block_period == 0 (another bus
+     * user's half slot); it moves to the next grid point.  block_period = 0: no blocking. */
+    uint32_t block_period = 0, block_phase = 0;
+    /* alternatively a set of blocked grid points within the period: block_set[((t + block_phase) % block_period) / grid] */
+    std::vector<uint8_t> block_set;
+
+    /* The console as measured (NOTES.md "Bus timing", tests/hw/timing), sound generator idle: MCLK = 22.5792 MHz =
+     * 512 per sample; a memory cycle starts on a 4-MCLK grid and lasts 8 (a SWP's locked write 4); per 512-MCLK frame
+     * two adjacent phase-4 half slots belong to another wave RAM user.  Their phase relative to the sample edge is
+     * not known yet (the averages the fit used do not depend on it). */
+    static DcWaits dreamcast()
+    {
+        DcWaits w;
+        w.grid = 4;
+        w.access = 8;
+        w.locked_write = 4;
+        w.block_period = 512;
+        w.block_set.assign(512 / 4, 0);
+        w.block_set[52 / 4] = w.block_set[60 / 4] = 1;
+        return w;
+    }
 };
 
 /* Register-block hook; the default implementation is AicaRegStub. */
@@ -62,12 +87,17 @@ public:
     AicaRegs *regs = nullptr;   /* nullptr: internal store */
 
     uint64_t reg_accesses = 0;
+    /* ARM -> SH4 interrupt: set when the ARM writes MCIPD with bit 5 (SCPU), as the console jobs' done stub does */
+    static const uint32_t MCIPD = 0x28B8;
+    bool scpu_raised = false;
+    uint64_t scpu_t = 0;   /* MCLK count at the start of that write cycle */
 
 private:
     std::vector<uint8_t> ram_;
     uint16_t store_[0x8000 / 4];
     Arm7DI *core_ = nullptr;
     bool e68k_out_ = false;
+    uint32_t grid_wait_ = 0;
     uint32_t e68k_L_ = 0;
 
     uint16_t rreg(uint32_t off);

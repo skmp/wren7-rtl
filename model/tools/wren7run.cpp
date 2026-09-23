@@ -7,7 +7,8 @@
  *     --max-cycles N     give up after N MCLK cycles (default 10000000)
  *     --bus-trace FILE   one line per bus cycle ("-" = stdout)
  *     --insn-trace FILE  one line per instruction / exception entry
- *     --waits RN,RS,WN,WS,REGR,REGW,INT   wave RAM read N/S, write N/S, register read/write, internal waits
+ *     --ideal            zero-wait memory (data sheet cycle counts) instead of the measured console timing
+ *     --waits RN,RS,WN,WS,REGR,REGW,INT   fixed waits: wave RAM read N/S, write N/S, register read/write, internal
  *     --dump ADDR,LEN    hex-dump wave RAM after the run
  * Prints the stop reason, registers, CPSR, cycle and bus-cycle counts.
  */
@@ -27,7 +28,7 @@ int main(int argc, char **argv)
     uint64_t max_cycles = 10000000;
     const char *bin = nullptr, *btrace = nullptr, *itrace = nullptr;
     std::vector<std::pair<uint32_t, uint32_t>> dumps;
-    DcWaits w;
+    DcWaits w = DcWaits::dreamcast();   /* measured console timing; --waits / --ideal override */
     for (int i = 1; i < argc; i++) {
         const char *a = argv[i];
         auto next = [&]() -> const char * {
@@ -39,6 +40,7 @@ int main(int argc, char **argv)
         else if (!strcmp(a, "--stop-addr")) stop_addr = strtoul(next(), 0, 0);
         else if (!strcmp(a, "--max-cycles")) max_cycles = strtoull(next(), 0, 0);
         else if (!strcmp(a, "--bus-trace")) btrace = next();
+        else if (!strcmp(a, "--ideal")) w = DcWaits();
         else if (!strcmp(a, "--insn-trace")) itrace = next();
         else if (!strcmp(a, "--waits")) {
             unsigned v[7] = {0};
@@ -46,7 +48,9 @@ int main(int argc, char **argv)
                 fprintf(stderr, "--waits needs 7 comma-separated values\n");
                 return 2;
             }
-            w = DcWaits{v[0], v[1], v[2], v[3], v[4], v[5], v[6]};
+            w = DcWaits();
+            w.ram_rn = v[0]; w.ram_rs = v[1]; w.ram_wn = v[2]; w.ram_ws = v[3];
+            w.reg_r = v[4]; w.reg_w = v[5]; w.internal = v[6];
         } else if (!strcmp(a, "--dump")) {
             unsigned da, dl;
             if (sscanf(next(), "%i,%i", (int *)&da, (int *)&dl) != 2) { fprintf(stderr, "--dump ADDR,LEN\n"); return 2; }

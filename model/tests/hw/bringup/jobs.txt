@@ -1,0 +1,36 @@
+# bring-up: hello kernel (ITER countdown), SCPU completion interrupt, timing
+out tests/hw/bringup/hw
+job hello_1 2000 3
+load 0 ../build/hw/arm/k_hello.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 1
+word 0x24 0x1234
+read 0x1FF000 0x60
+run
+job hello_1000 2000 3
+load 0 ../build/hw/arm/k_hello.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 1000
+word 0x24 0x1234
+read 0x1FF000 0x60
+run
+job hello_100000 2000 3
+load 0 ../build/hw/arm/k_hello.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 100000
+word 0x24 0x1234
+read 0x1FF000 0x60
+run
+job hello_1000000 2000 3
+load 0 ../build/hw/arm/k_hello.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 1000000
+word 0x24 0x1234
+read 0x1FF000 0x60
+run
+job hello_timeout 50 1
+load 0 ../build/hw/arm/k_hello.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 0x7FFFFFFF
+read 0x1FF000 0x60
+run

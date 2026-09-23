@@ -75,9 +75,20 @@ void DcArmBus::update_interrupts()
 void DcArmBus::cycle(const BusCycle &c, BusResult &r)
 {
     r.abort = false;
-    if (c.type == CYC_I || c.type == CYC_C) { r.wait = waits.internal; return; }
+    if (c.type == CYC_I || c.type == CYC_C) { r.wait = waits.grid ? 0 : waits.internal; return; }
     const bool wr = c.flags & BF_WRITE, byte = c.flags & BF_BYTE;
     const uint32_t a = c.addr & 0x00FFFFFF;
+    if (waits.grid) {
+        uint64_t start = (c.t + waits.grid - 1) / waits.grid * waits.grid;
+        /* the blocked half slots belong to another wave RAM user: AICA register accesses are not affected
+         * (tests/hw/timing ldr_reg) */
+        if (a < 0x800000 && waits.block_period && waits.block_set.empty())
+            while ((start + waits.block_phase) % waits.block_period == 0) start += waits.grid;
+        else if (a < 0x800000 && waits.block_period)
+            while (waits.block_set[((start + waits.block_phase) % waits.block_period) / waits.grid]) start += waits.grid;
+        const uint32_t len = (wr && (c.flags & BF_LOCK)) ? waits.locked_write : waits.access;
+        grid_wait_ = (uint32_t)(start - c.t) + len - 1;
+    }
     if (a < 0x800000) {
         const uint32_t ra = a & (RAM_SIZE - 1);
         if (wr) {
@@ -88,12 +99,14 @@ void DcArmBus::cycle(const BusCycle &c, BusResult &r)
             r.rdata = rd32(ra);
             r.wait = c.type == CYC_N ? waits.ram_rn : waits.ram_rs;
         }
+        if (waits.grid) r.wait = grid_wait_;
         return;
     }
     /* AICA registers: 16 bits in the low half of each 32-bit slot; byte lanes 2/3 read 0, writes to them dropped */
     reg_accesses++;
     const uint32_t off = a & 0x7FFF, slot = off & 0x7FFC, lane = off & 3;
     if (wr) {
+        if (slot == MCIPD && lane == 0 && (c.wdata & 0x20) && !scpu_raised) { scpu_raised = true; scpu_t = c.t; }
         if (!byte) wreg(slot, c.wdata & 0xFFFF, 0xFFFF);
         else if (lane < 2) wreg(slot, (c.wdata & 0xFF) << (8 * lane), 0xFF << (8 * lane));
         r.wait = waits.reg_w;
@@ -101,6 +114,7 @@ void DcArmBus::cycle(const BusCycle &c, BusResult &r)
         r.rdata = rreg(slot);
         r.wait = waits.reg_r;
     }
+    if (waits.grid) r.wait = grid_wait_;
 }
 
 } // namespace wren7

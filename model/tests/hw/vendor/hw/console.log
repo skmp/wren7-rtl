@@ -1,0 +1,78 @@
+hwrun: 21:49:22 lock taken by pid 839330 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac06f820
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55781835 SH4 cycles
+ADC_1                            done    6537
+ADD_1                            done    6079
+AND_1                            done    6417
+BIC_1                            done    5923
+CMN_1                            done    6025
+EOR_1                            done    5919
+LDM_1                            done    9087
+LDM_2                            done    8781
+LDM_3                            done    8829
+LDM_4                            done    8841
+LDM_5                            done    7127
+LDM_6                            done    7105
+LDM_7                            done    7063
+LDM_8                            done    7159
+LDRB_1                           done    6411
+LDRB_2                           done    6561
+LDRB_3                           done    6459
+LDRB_4                           done    6523
+LDR_1                            done    8461
+LDR_10                           done    7105
+LDR_11                           done    9883
+LDR_12                           done    9837
+LDR_2                            done    7223
+LDR_3                            done    7101
+LDR_4                            done    7213
+LDR_5                            done    9915
+LDR_6                            done    9269
+LDR_7                            done    10103
+LDR_8                            done    9159
+LDR_9                            done    7101
+MLA_1                            done    5953
+MOV_1                            done    7733
+MRS_1                            done    6089
+MSR_1                            done    6345
+MUL_1                            done    5991
+MVN_1                            done    5713
+ORR_1                            done    5919
+RSC_1                            done    5873
+SBC_1                            done    6019
+STM_1                            done    8211
+STM_2                            done    8267
+STM_3                            done    8409
+STM_4                            done    8475
+SWPB_1                           done    6835
+SWP_1                            done    6729
+45 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 116, dma_cntr = 66
+vid_set_mode: 640x480 VGA with 1 framebuffers.

@@ -1,0 +1,15 @@
+  [C kept] rec 0 MULS CPSR: Rm=00004000 Rs=050c368d Rn=1dce4e7b flags=e console=00000000 model=20000000
+  [C kept] rec 0 MLAS CPSR: Rm=00004000 Rs=050c368d Rn=1dce4e7b flags=e console=00000000 model=20000000
+  [C kept] rec 2 MULS CPSR: Rm=5079fc5d Rs=dabf5585 Rn=2dcfc8ae flags=0 console=a0000000 model=80000000
+  [C kept] rec 2 MLAS CPSR: Rm=5079fc5d Rs=dabf5585 Rn=2dcfc8ae flags=0 console=a0000000 model=80000000
+  [C kept] rec 7 MULS CPSR: Rm=b22e1ea5 Rs=63e93829 Rn=0000ffff flags=7 console=10000000 model=30000000
+  [C kept] rec 7 MLAS CPSR: Rm=b22e1ea5 Rs=63e93829 Rn=0000ffff flags=7 console=10000000 model=30000000
+C kept                   mismatches over 1024 records: MLA Rd==Rm 0, MULS result 0, MULS CPSR 502, MLAS result 0, MLAS CPSR 502, MULS Rd==Rm 0
+  [C = last ALU carry] rec 2 MULS CPSR: Rm=5079fc5d Rs=dabf5585 Rn=2dcfc8ae flags=0 console=a0000000 model=80000000
+  [C = last ALU carry] rec 2 MLAS CPSR: Rm=5079fc5d Rs=dabf5585 Rn=2dcfc8ae flags=0 console=a0000000 model=80000000
+  [C = last ALU carry] rec 3 MULS CPSR: Rm=50d59c0a Rs=0000007c Rn=b3d3cdbd flags=4 console=00000000 model=20000000
+  [C = last ALU carry] rec 5 MULS CPSR: Rm=00000002 Rs=000000cd Rn=0000007f flags=1 console=10000000 model=30000000
+  [C = last ALU carry] rec 7 MULS CPSR: Rm=b22e1ea5 Rs=63e93829 Rn=0000ffff flags=7 console=10000000 model=30000000
+  [C = last ALU carry] rec 7 MLAS CPSR: Rm=b22e1ea5 Rs=63e93829 Rn=0000ffff flags=7 console=10000000 model=30000000
+C = last ALU carry       mismatches over 1024 records: MLA Rd==Rm 0, MULS result 0, MULS CPSR 555, MLAS result 0, MLAS CPSR 451, MULS Rd==Rm 0
+C = last shifter carry   mismatches over 1024 records: MLA Rd==Rm 0, MULS result 0, MULS CPSR 0, MLAS result 0, MLAS CPSR 0, MULS Rd==Rm 0

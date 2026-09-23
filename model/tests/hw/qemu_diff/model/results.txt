@@ -1,0 +1,4 @@
+s1 done 0 46925
+s2 done 0 47447
+s3 done 0 47156
+s4 done 0 47250

@@ -3,9 +3,9 @@
 #   make            build everything
 #   make test       vendor suite, data-sheet timing checks, kept qemu_diff batches (writes tests/*_summary.txt)
 BUILD = ../build/model
-CXXFLAGS = -O2 -g -Wall -Wextra -std=c++17
+CXXFLAGS = -O2 -g -Wall -Wextra -std=c++17 -fopenmp
 SRCS = $(wildcard src/*.cpp)
-HDRS = $(wildcard src/*.h)
+HDRS = $(wildcard src/*.h tools/*.h)
 OBJS = $(SRCS:src/%.cpp=$(BUILD)/obj/%.o)
 TOOLS = $(basename $(notdir $(wildcard tools/*.cpp)))
 .PHONY: all clean test $(TOOLS)
