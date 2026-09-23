@@ -1,0 +1,55 @@
+ok   unexecuted (moveq, Z=0)
+ok   b
+ok   bl
+ok   data normal (mov r1,#1)
+ok   data shift(Rs) (add r1,r2,r3,lsl r4)
+ok   data dest=pc (mov pc,r2)
+ok   data shift(Rs) dest=pc
+ok   R15 operand, imm shift = pc+8 (mov r1,pc)
+ok   R15 operand, reg shift = pc+12 (add r1,pc,r3,lsl r4)
+ok   mrs r1,cpsr
+ok   msr cpsr_flg,r1
+ok   mul Rs=00000000 (m=1)
+ok   mul Rs=00000001 (m=1)
+ok   mul Rs=00000002 (m=2)
+ok   mul Rs=00000003 (m=2)
+ok   mul Rs=00000007 (m=2)
+ok   mul Rs=00000008 (m=3)
+ok   mul Rs=0000001f (m=3)
+ok   mul Rs=00000020 (m=4)
+ok   mul Rs=0000007f (m=4)
+ok   mul Rs=00000080 (m=5)
+ok   mul Rs=00007fff (m=8)
+ok   mul Rs=00008000 (m=9)
+ok   mul Rs=1fffffff (m=15)
+ok   mul Rs=20000000 (m=16)
+ok   mul Rs=7fffffff (m=16)
+ok   mul Rs=80000000 (m=16)
+ok   mul Rs=ffffffff (m=16)
+ok   mla Rs=0x100
+ok   ldr r1,[r2]
+ok   ldrb r1,[r2,#1]
+ok   ldr pc,[r2]
+ok   ldr r2,[r2,#4]! (load wins over write-back)
+ok   str r1,[r2]
+ok   str pc,[r2] stores pc+12
+ok   ldm 1 register
+ok   ldm 1 register, pc
+ok   ldm 3 registers
+ok   ldm 3 registers incl pc
+ok   stm 1 register
+ok   stm 3 registers
+ok   stm {r1,pc} stores pc+12
+ok   stmia r2!,{r2,r3}: base 1st stores old base (4.8.6)
+ok   stmdb r2!,{r1,r2,r3}: base 2nd stores new base (4.8.6)
+ok   swp
+ok   swpb
+ok   swi
+ok   undefined (cond 011...1)
+ok   cdp, coprocessor absent
+ok   ldc, coprocessor absent
+ok   mcr, coprocessor absent
+ok   mrc, coprocessor absent
+ok   irq entry
+ok   fiq entry
+54 ok, 0 failed

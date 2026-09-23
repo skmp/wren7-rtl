@@ -1,0 +1,10 @@
+tests/qemu_diff/s1             1000 cases      0 mismatches  (46860 model cycles)
+tests/qemu_diff/s2             1000 cases      0 mismatches  (47382 model cycles)
+tests/qemu_diff/s3             1000 cases      0 mismatches  (47091 model cycles)
+tests/qemu_diff/s4             1000 cases      0 mismatches  (47185 model cycles)
+data-proc      2179 cases, 0 mismatches
+mul/mla         489 cases, 0 mismatches
+ldr/str         592 cases, 0 mismatches
+ldm/stm         482 cases, 0 mismatches
+swp             258 cases, 0 mismatches
+total 4000 cases, 0 mismatches
