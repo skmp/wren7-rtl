@@ -7,6 +7,10 @@
  * data, the number of nWAIT stretch cycles and ABORT.  Timing therefore comes only from the cycle sequence plus
  * the memory system's wait states -- there is no per-instruction latency table.
  *
+ * The interface is one bus cycle per call (bus_cycle()): the caller owns time and can interleave other masters or
+ * a whole system between any two cycles of an instruction.  Internally each instruction class is a small cycle
+ * sequencer (seq_ / k_) holding its in-flight latches (x_), the way the hardware's decode/control holds them.
+ *
  * Configuration modelled: PROG32 = DATA32 = 1 (32-bit modes), BIGEND = 0, no coprocessors (CPA/CPB high: every
  * coprocessor instruction takes the undefined trap), debug/ICEbreaker absent (DBGEN low).
  *
@@ -47,6 +51,9 @@ struct BusResult {
 
 struct Arm7Bus {
     virtual void cycle(const BusCycle &c, BusResult &r) = 0;
+    /* called at every instruction boundary with the current MCLK count, before the interrupt inputs are checked:
+     * lets the system update nFIQ/nIRQ for events that happened inside the last bus cycle */
+    virtual void tick(uint64_t) {}
     virtual ~Arm7Bus() {}
 };
 
@@ -67,11 +74,12 @@ public:
     explicit Arm7DI(Arm7Bus *bus);
 
     /* Power-on state (register contents are not defined by the data sheet; the model zeroes them) followed by a
-     * reset release: SVC mode, I = F = 1, execution from address 0. */
+     * reset release: SVC mode, I = F = 1, execution from address 0.  The reset entry's bus cycles run here, so the
+     * core returns at the boundary before the instruction at 0 (pipeline = [0, 4]). */
     void power_on();
 
-    /* nRESET: while asserted, step() performs dummy fetches from incrementing addresses (section 3.5); the release
-     * runs the reset exception entry.  Takes effect at the next instruction boundary. */
+    /* nRESET: while asserted, bus_cycle() performs dummy fetches from incrementing addresses (section 3.5); the
+     * release runs the reset exception entry.  Takes effect at the next instruction boundary. */
     void set_reset(bool asserted);
     /* nFIQ / nIRQ, level sensitive (true = request asserted, i.e. pin LOW).  Sampled once per MCLK cycle through a
      * synchroniser of irq_sync_stages cycles (0 = ISYNC high), checked at the end of each instruction. */
@@ -79,8 +87,14 @@ public:
     void set_irq(bool asserted) { irq_in_ = asserted; }
     int irq_sync_stages = 0;
 
-    /* Execute one instruction, one exception entry, or (in reset) one dummy fetch. */
-    void step();
+    /* Perform exactly one bus cycle (one MCLK cycle plus its nWAIT stretch): drive it on the Arm7Bus, take the
+     * answer and do this cycle's work.  At an instruction boundary the call first runs Arm7Bus::tick(), then picks
+     * reset, an exception entry or the next instruction, and performs that sequence's first cycle. */
+    void bus_cycle();
+    /* True between instructions / exception entries / reset dummy fetches: the next bus_cycle() starts a new one.
+     * exec_addr(), exec_word() and the registers describe the architectural state only here; mid-instruction they
+     * show the sequencer's partial work. */
+    bool at_boundary() const { return seq_ == SQ_IDLE; }
 
     /* ---- state access (harness / tests) ---- */
     uint32_t reg(int r) const;               /* R0..R14 of the current mode; R15 reads as executing address + 8 */
@@ -113,6 +127,22 @@ public:
 private:
     struct Slot { uint32_t word; bool abort; };
 
+    /* cycle sequencer: which sequence is in progress and its bus cycle index */
+    enum Seq : uint8_t { SQ_IDLE, SQ_RESET, SQ_SKIP, SQ_DP, SQ_PSR, SQ_MUL, SQ_SWP, SQ_SDT, SQ_BDT, SQ_BRANCH,
+                         SQ_UNDEF, SQ_EXC, SQ_REFILL };
+    uint8_t seq_;
+    int k_;
+    struct InFlight {   /* latches of the sequence in progress */
+        uint32_t op;
+        uint32_t addr, calc, base, wbv, data, list, newpc, target, mul, acc;
+        uint32_t vector, mode;
+        unsigned amt;
+        int m, r, borrow;
+        uint8_t bf;
+        bool cin, wb, ab, first, pc_loaded, userbank, set_f, alu_c, sh_c;
+        Slot fa;       /* refill: the first fetched word */
+    } x_;
+
     Arm7Bus *bus_;
     uint32_t gpr_[31];
     uint32_t pc_;              /* R15 = address register/incrementer: next fetch address = executing address + 8 */
@@ -139,26 +169,34 @@ private:
     void write_cpsr(uint32_t v, uint32_t mask);
     void undoc(const char *what);
 
-    /* one MCLK cycle: type = next_type_, then next_type_ = next */
+    /* one MCLK cycle on the bus: type = next_type_, then next_type_ = next */
     uint32_t cyc(uint32_t addr, uint8_t flags, uint32_t wdata, uint8_t next);
     void cycle1_fetch(uint8_t next);   /* fetch pc+8 into f1_, pc_ += 4 */
     void advance() { ex_ = de_; de_ = f1_; }
-    void refill(uint32_t target);      /* fetch target (N), target+4 (S): pipeline = [target, target+4] */
+    void done() { seq_ = SQ_IDLE; }
     bool cond_pass(uint32_t op) const;
     bool fiq_seen() const;
     bool irq_seen() const;
 
-    void exec(uint32_t op);
-    void exec_dp(uint32_t op);
-    void exec_psr(uint32_t op);
-    void exec_mul(uint32_t op);
-    void exec_swp(uint32_t op);
-    void exec_sdt(uint32_t op);
-    void exec_bdt(uint32_t op);
-    void exec_branch(uint32_t op);
-    void exec_undef();
-    void exception(uint32_t vector, uint32_t mode, bool set_f);  /* Table 22 entry sequence */
-    void reset_step();
+    void begin();                                                 /* instruction boundary: pick the next sequence */
+    void decode(uint32_t op);
+    void start_exc(uint32_t vector, uint32_t mode, bool set_f);   /* Table 22 entry sequence */
+    void start_refill(uint32_t target);   /* fetch target (N), target+4 (S): pipeline = [target, target+4] */
+    void dp_finish(uint32_t a, uint32_t b, bool sc);
+
+    /* one bus cycle of each sequence */
+    void c_reset();
+    void c_skip();
+    void c_dp();
+    void c_psr();
+    void c_mul();
+    void c_swp();
+    void c_sdt();
+    void c_bdt();
+    void c_branch();
+    void c_undef();
+    void c_exc();
+    void c_refill();
 };
 
 const char *mode_name(uint32_t mode);

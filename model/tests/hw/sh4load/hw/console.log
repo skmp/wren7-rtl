@@ -1,0 +1,137 @@
+hwrun: 00:02:17 lock taken by pid 973776 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac0729e0
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55781752 SH4 cycles
+m0_g0_nop_n64                    done    416611
+m0_g0_nop_n576                   done    2877529
+m0_g0_rsh_n64                    done    344683
+m0_g0_rsh_n576                   done    2229885
+m0_g0_ldr_n64                    done    309497
+m0_g0_ldr_n576                   done    1912803
+m0_g0_str_n64                    done    271957
+m0_g0_str_n576                   done    1574647
+m1_g0_nop_n64                    done    427204
+m1_g0_nop_n576                   done    2942942
+m1_g0_rsh_n64                    done    374260
+m1_g0_rsh_n576                   done    2467174
+m1_g0_ldr_n64                    done    319092
+m1_g0_ldr_n576                   done    1973492
+m1_g0_str_n64                    done    279218
+m1_g0_str_n576                   done    1610826
+m1_g2000_nop_n64                 done    421712
+m1_g2000_nop_n576                done    2923334
+m1_g2000_rsh_n64                 done    349786
+m1_g2000_rsh_n576                done    2268886
+m1_g2000_ldr_n64                 done    311330
+m1_g2000_ldr_n576                done    1922718
+m1_g2000_str_n64                 done    274652
+m1_g2000_str_n576                done    1597338
+m1_g8000_nop_n64                 done    417302
+m1_g8000_nop_n576                done    2893676
+m1_g8000_rsh_n64                 done    346098
+m1_g8000_rsh_n576                done    2241262
+m1_g8000_ldr_n64                 done    309768
+m1_g8000_ldr_n576                done    1914266
+m1_g8000_str_n64                 done    272970
+m1_g8000_str_n576                done    1582260
+m2_g0_nop_n64                    done    601602
+m2_g0_nop_n576                   done    4305768
+m2_g0_rsh_n64                    done    383896
+m2_g0_rsh_n576                   done    2346132
+m2_g0_ldr_n64                    done    383618
+m2_g0_ldr_n576                   done    2344452
+m2_g0_str_n64                    done    383552
+m2_g0_str_n576                   done    2344494
+m2_g2000_nop_n64                 done    422630
+m2_g2000_nop_n576                done    2925510
+m2_g2000_rsh_n64                 done    346780
+m2_g2000_rsh_n576                done    2249768
+m2_g2000_ldr_n64                 done    310938
+m2_g2000_ldr_n576                done    1924616
+m2_g2000_str_n64                 done    275190
+m2_g2000_str_n576                done    1600444
+m2_g8000_nop_n64                 done    418112
+m2_g8000_nop_n576                done    2890242
+m2_g8000_rsh_n64                 done    345166
+m2_g8000_rsh_n576                done    2238062
+m2_g8000_ldr_n64                 done    309640
+m2_g8000_ldr_n576                done    1913186
+m2_g8000_str_n64                 done    272622
+m2_g8000_str_n576                done    1581018
+m3_g0_nop_n64                    done    418716
+m3_g0_nop_n576                   done    2879614
+m3_g0_rsh_n64                    done    346628
+m3_g0_rsh_n576                   done    2232166
+m3_g0_ldr_n64                    done    311358
+m3_g0_ldr_n576                   done    1915108
+m3_g0_str_n64                    done    273896
+m3_g0_str_n576                   done    1576858
+m3_g2000_nop_n64                 done    417128
+m3_g2000_nop_n576                done    2877864
+m3_g2000_rsh_n64                 done    345126
+m3_g2000_rsh_n576                done    2230204
+m3_g2000_ldr_n64                 done    309952
+m3_g2000_ldr_n576                done    1913046
+m3_g2000_str_n64                 done    272520
+m3_g2000_str_n576                done    1575028
+m3_g8000_nop_n64                 done    416792
+m3_g8000_nop_n576                done    2877542
+m3_g8000_rsh_n64                 done    344970
+m3_g8000_rsh_n576                done    2229962
+m3_g8000_ldr_n64                 done    309662
+m3_g8000_ldr_n576                done    1912952
+m3_g8000_str_n64                 done    272070
+m3_g8000_str_n576                done    1575034
+m4_g0_nop_n64                    done    431444
+m4_g0_nop_n576                   done    2891986
+m4_g0_rsh_n64                    done    358818
+m4_g0_rsh_n576                   done    2244104
+m4_g0_ldr_n64                    done    324374
+m4_g0_ldr_n576                   done    1927246
+m4_g0_str_n64                    done    286212
+m4_g0_str_n576                   done    1589260
+m4_g2000_nop_n64                 done    416786
+m4_g2000_nop_n576                done    2877830
+m4_g2000_rsh_n64                 done    344844
+m4_g2000_rsh_n576                done    2230190
+m4_g2000_ldr_n64                 done    309616
+m4_g2000_ldr_n576                done    1913264
+m4_g2000_str_n64                 done    272162
+m4_g2000_str_n576                done    1574894
+m4_g8000_nop_n64                 done    416628
+m4_g8000_nop_n576                done    2877678
+m4_g8000_rsh_n64                 done    344832
+m4_g8000_rsh_n576                done    2229998
+m4_g8000_ldr_n64                 done    309518
+m4_g8000_ldr_n576                done    1913152
+m4_g8000_str_n64                 done    271852
+m4_g8000_str_n576                done    1574910
+104 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 198, dma_cntr = 150
+vid_set_mode: 640x480 VGA with 1 framebuffers.

@@ -1,0 +1,25 @@
+c16_dr16_nop         console   621.77 model   621.74
+c16_dr16_rsh         console   494.33 model   494.30
+c16_dr16_ldr         console   435.15 model   435.20
+c16_dr16_str         console   329.20 model   329.14
+c16_dr16e_nop        console   552.61 model   552.66
+c16_dr16e_rsh        console   485.13 model   485.05
+c16_dr16e_ldr        console   391.57 model   391.46
+c16_dr16e_str        console   292.56 model   292.56
+c8odd_w16o_nop       console   580.35 model   580.26
+c8odd_w16o_rsh       console   469.40 model   469.38
+c8odd_w16o_ldr       console   398.18 model   398.23
+c8odd_w16o_str       console   307.27 model   307.23
+c16_dr16_sw2000_nop  console   636.34 model   636.58  DIFFERENT
+c16_dr16_sw2000_rsh  console   496.64 model   497.35  DIFFERENT
+c16_dr16_sw2000_ldr  console   438.01 model   438.51  DIFFERENT
+c16_dr16_sw2000_str  console   337.09 model   337.02
+c32_dr32_sw8000_nop  console   748.50 model   748.56
+c32_dr32_sw8000_rsh  console   560.75 model   559.95  DIFFERENT
+c32_dr32_sw8000_ldr  console   496.12 model   490.06  DIFFERENT
+c32_dr32_sw8000_str  console   396.19 model   396.39  DIFFERENT
+c4_sw0_nop           console   828.32 model   814.45  DIFFERENT
+c4_sw0_rsh           console   444.54 model   440.44  DIFFERENT
+c4_sw0_ldr           console   438.66 model   434.89  DIFFERENT
+c4_sw0_str           console   438.55 model   431.18  DIFFERENT
+14/24 kernels within 0.20 MCLK per iteration (DcWaits::dreamcast)

@@ -458,7 +458,7 @@ static int fitset()
     }
     std::vector<double> pr(vs.size());
     eval(set, &pr);
-    both("per variant: measured, predicted, delta (U per iteration)\n");
+    both("%s", "per variant: measured, predicted, delta (U per iteration)\n");
     for (size_t vi = 0; vi < vs.size(); vi++)
         both("  %-15s %8.2f %8.2f %6.2f\n", vs[vi].name.c_str(), vs[vi].meas, pr[vi], vs[vi].meas - pr[vi]);
     fclose(out);

@@ -1,0 +1,8 @@
+r065_rsh             console   418.92 model   418.92
+r110_nop             console   552.64 model   552.63
+r111_nop             console   552.62 model   552.62
+w072_rsh             console   418.92 model   418.91
+w111_nop             console   552.63 model   552.62
+r109_rsh             console   417.16 model   417.20
+r000_nop             console   552.64 model   552.62
+7/7 kernels within 0.10 MCLK per iteration (DcWaits::dreamcast)

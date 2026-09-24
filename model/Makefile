@@ -9,6 +9,7 @@ HDRS = $(wildcard src/*.h tools/*.h)
 OBJS = $(SRCS:src/%.cpp=$(BUILD)/obj/%.o)
 TOOLS = $(basename $(notdir $(wildcard tools/*.cpp)))
 .PHONY: all clean test $(TOOLS)
+.SECONDARY:
 all: $(TOOLS)
 $(TOOLS): %: $(BUILD)/%
 $(BUILD)/obj/%.o: src/%.cpp $(HDRS)

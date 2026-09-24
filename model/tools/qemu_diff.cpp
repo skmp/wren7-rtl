@@ -336,7 +336,7 @@ static bool check_batch(const std::string &tdir, const std::string &wdir, Totals
     bus.wr32(4, BASE);
     Arm7DI cpu(&bus);
     bus.attach(&cpu);
-    while (cpu.exec_word() != 0xEF000000 && cpu.cycles < 200000000ull) cpu.step();
+    while (!cpu.at_boundary() || (cpu.exec_word() != 0xEF000000 && cpu.cycles < 200000000ull)) cpu.bus_cycle();
     if (cpu.exec_word() != 0xEF000000) { fprintf(stderr, "%s: model did not reach the SWI\n", tdir.c_str()); return false; }
 
     uint64_t bad0 = tot.bad;

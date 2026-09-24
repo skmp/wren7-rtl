@@ -1,0 +1,723 @@
+# ARM timing kernels (k_dspmem_*, DSP idle, channels off) while the SH4 accesses G2: mode 1 read / 2 write
+# wave RAM 0x1C0000, 3 read / 4 write AICA register (0x2800 VER, 0x31FC COEF 127), at most every GAP SH4 cycles.
+out tests/hw/sh4load/hw
+job m0_g0_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+run
+job m0_g0_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+run
+job m0_g0_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+run
+job m0_g0_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+run
+job m0_g0_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+run
+job m0_g0_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+run
+job m0_g0_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+run
+job m0_g0_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+run
+job m1_g0_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 0
+run
+job m1_g0_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 0
+run
+job m1_g0_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 0
+run
+job m1_g0_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 0
+run
+job m1_g0_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 0
+run
+job m1_g0_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 0
+run
+job m1_g0_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 0
+run
+job m1_g0_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 0
+run
+job m1_g2000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 2000
+run
+job m1_g2000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 2000
+run
+job m1_g2000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 2000
+run
+job m1_g2000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 2000
+run
+job m1_g2000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 2000
+run
+job m1_g2000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 2000
+run
+job m1_g2000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 2000
+run
+job m1_g2000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 2000
+run
+job m1_g8000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 8000
+run
+job m1_g8000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 8000
+run
+job m1_g8000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 8000
+run
+job m1_g8000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 8000
+run
+job m1_g8000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 8000
+run
+job m1_g8000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 8000
+run
+job m1_g8000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 1 0x1C0000 8000
+run
+job m1_g8000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 1 0x1C0000 8000
+run
+job m2_g0_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 0
+run
+job m2_g0_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 0
+run
+job m2_g0_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 0
+run
+job m2_g0_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 0
+run
+job m2_g0_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 0
+run
+job m2_g0_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 0
+run
+job m2_g0_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 0
+run
+job m2_g0_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 0
+run
+job m2_g2000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 2000
+run
+job m2_g2000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 2000
+run
+job m2_g2000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 2000
+run
+job m2_g2000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 2000
+run
+job m2_g2000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 2000
+run
+job m2_g2000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 2000
+run
+job m2_g2000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 2000
+run
+job m2_g2000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 2000
+run
+job m2_g8000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 8000
+run
+job m2_g8000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 8000
+run
+job m2_g8000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 8000
+run
+job m2_g8000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 8000
+run
+job m2_g8000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 8000
+run
+job m2_g8000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 8000
+run
+job m2_g8000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 2 0x1C0000 8000
+run
+job m2_g8000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 2 0x1C0000 8000
+run
+job m3_g0_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 0
+run
+job m3_g0_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 0
+run
+job m3_g0_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 0
+run
+job m3_g0_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 0
+run
+job m3_g0_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 0
+run
+job m3_g0_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 0
+run
+job m3_g0_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 0
+run
+job m3_g0_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 0
+run
+job m3_g2000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 2000
+run
+job m3_g2000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 2000
+run
+job m3_g2000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 2000
+run
+job m3_g2000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 2000
+run
+job m3_g2000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 2000
+run
+job m3_g2000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 2000
+run
+job m3_g2000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 2000
+run
+job m3_g2000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 2000
+run
+job m3_g8000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 8000
+run
+job m3_g8000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 8000
+run
+job m3_g8000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 8000
+run
+job m3_g8000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 8000
+run
+job m3_g8000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 8000
+run
+job m3_g8000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 8000
+run
+job m3_g8000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 3 0x2800 8000
+run
+job m3_g8000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 3 0x2800 8000
+run
+job m4_g0_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 0
+run
+job m4_g0_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 0
+run
+job m4_g0_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 0
+run
+job m4_g0_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 0
+run
+job m4_g0_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 0
+run
+job m4_g0_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 0
+run
+job m4_g0_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 0
+run
+job m4_g0_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 0
+run
+job m4_g2000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 2000
+run
+job m4_g2000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 2000
+run
+job m4_g2000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 2000
+run
+job m4_g2000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 2000
+run
+job m4_g2000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 2000
+run
+job m4_g2000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 2000
+run
+job m4_g2000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 2000
+run
+job m4_g2000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 2000
+run
+job m4_g8000_nop_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 8000
+run
+job m4_g8000_nop_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 8000
+run
+job m4_g8000_rsh_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 8000
+run
+job m4_g8000_rsh_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 8000
+run
+job m4_g8000_ldr_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 8000
+run
+job m4_g8000_ldr_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_ldr.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 8000
+run
+job m4_g8000_str_n64 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 64
+sh4load 4 0x31FC 8000
+run
+job m4_g8000_str_n576 2000 3
+load 0 ../build/hw/arm/k_dspmem_str.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem/mpro_m0.bin
+word 0x20 576
+sh4load 4 0x31FC 8000
+run

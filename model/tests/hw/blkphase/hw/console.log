@@ -1,0 +1,165 @@
+hwrun: 22:56:47 lock taken by pid 876874 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac06f820
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55781469 SH4 cycles
+bp31_n256                        done    1170409
+bp31_n2304                       done    10436415
+bp32_n256                        done    1170611
+bp32_n2304                       done    10437855
+bp33_n256                        done    1172487
+bp33_n2304                       done    10436887
+bp34_n256                        done    1172865
+bp34_n2304                       done    10437595
+bp35_n256                        done    1170477
+bp35_n2304                       done    10435065
+bp36_n256                        done    1170557
+bp36_n2304                       done    10433095
+bp37_n256                        done    1172729
+bp37_n2304                       done    10434857
+bp38_n256                        done    1172715
+bp38_n2304                       done    10433643
+bp39_n256                        done    1172061
+bp39_n2304                       done    10435397
+bp40_n256                        done    1170393
+bp40_n2304                       done    10435477
+bp41_n256                        done    1168431
+bp41_n2304                       done    10436179
+bp42_n256                        done    1171043
+bp42_n2304                       done    10437053
+bp43_n256                        done    1168749
+bp43_n2304                       done    10434407
+bp44_n256                        done    1170915
+bp44_n2304                       done    10435109
+bp45_n256                        done    1168689
+bp45_n2304                       done    10436397
+bp46_n256                        done    1170671
+bp46_n2304                       done    10436823
+bp47_n256                        done    1169347
+bp47_n2304                       done    10433907
+bp48_n256                        done    1171643
+bp48_n2304                       done    10436659
+bp49_n256                        done    1168473
+bp49_n2304                       done    10435687
+bp50_n256                        done    1171031
+bp50_n2304                       done    10433337
+bp51_n256                        done    1169313
+bp51_n2304                       done    10435627
+bp52_n256                        done    1171599
+bp52_n2304                       done    10436015
+bp53_n256                        done    1167641
+bp53_n2304                       done    10432403
+bp54_n256                        done    1169559
+bp54_n2304                       done    10431911
+bp55_n256                        done    1170047
+bp55_n2304                       done    10434685
+bp56_n256                        done    1168697
+bp56_n2304                       done    10432825
+bp57_n256                        done    1168435
+bp57_n2304                       done    10434071
+bp58_n256                        done    1167463
+bp58_n2304                       done    10433853
+bp59_n256                        done    1169443
+bp59_n2304                       done    10431993
+bp60_n256                        done    1168069
+bp60_n2304                       done    10432197
+bp61_n256                        done    1168559
+bp61_n2304                       done    10432663
+bp62_n256                        done    1169685
+bp62_n2304                       done    10435605
+bp63_n256                        done    1171149
+bp63_n2304                       done    10434563
+bq31_n256                        done    1169405
+bq31_n2304                       done    10437327
+bq32_n256                        done    1172347
+bq32_n2304                       done    10437709
+bq33_n256                        done    1170597
+bq33_n2304                       done    10436999
+bq34_n256                        done    1171615
+bq34_n2304                       done    10435575
+bq35_n256                        done    1173025
+bq35_n2304                       done    10437161
+bq36_n256                        done    1171567
+bq36_n2304                       done    10436419
+bq37_n256                        done    1172225
+bq37_n2304                       done    10436073
+bq38_n256                        done    1172099
+bq38_n2304                       done    10433175
+bq39_n256                        done    1168979
+bq39_n2304                       done    10435093
+bq40_n256                        done    1170577
+bq40_n2304                       done    10435235
+bq41_n256                        done    1168471
+bq41_n2304                       done    10435043
+bq42_n256                        done    1169723
+bq42_n2304                       done    10434669
+bq43_n256                        done    1168073
+bq43_n2304                       done    10433291
+bq44_n256                        done    1168937
+bq44_n2304                       done    10432803
+bq45_n256                        done    1171395
+bq45_n2304                       done    10434035
+bq46_n256                        done    1170915
+bq46_n2304                       done    10434715
+bq47_n256                        done    1169021
+bq47_n2304                       done    10432555
+bq48_n256                        done    1170421
+bq48_n2304                       done    10433003
+bq49_n256                        done    1170695
+bq49_n2304                       done    10434209
+bq50_n256                        done    1169195
+bq50_n2304                       done    10435759
+bq51_n256                        done    1170945
+bq51_n2304                       done    10433269
+bq52_n256                        done    1169879
+bq52_n2304                       done    10431721
+bq53_n256                        done    1170703
+bq53_n2304                       done    10435291
+bq54_n256                        done    1170811
+bq54_n2304                       done    10433659
+bq55_n256                        done    1170553
+bq55_n2304                       done    10433481
+bq56_n256                        done    1169403
+bq56_n2304                       done    10434035
+bq57_n256                        done    1167127
+bq57_n2304                       done    10434229
+bq58_n256                        done    1169275
+bq58_n2304                       done    10434393
+bq59_n256                        done    1169577
+bq59_n2304                       done    10433157
+bq60_n256                        done    1167195
+bq60_n2304                       done    10433659
+bq61_n256                        done    1170307
+bq61_n2304                       done    10435261
+bq62_n256                        done    1169737
+bq62_n2304                       done    10433965
+bq63_n256                        done    1171021
+bq63_n2304                       done    10430939
+132 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 265, dma_cntr = 223
+vid_set_mode: 640x480 VGA with 1 framebuffers.

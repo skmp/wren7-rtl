@@ -5,6 +5,16 @@ multiply).  This model is the reference for the later RTL.  Status (2026-09-23):
 measurements started (see "Console measurements": bus timing per access class, multiplier, reset behaviour).  Everything below is either data sheet (section/table given), minicast, or an
 explicit model choice marked **[H#]** = open hardware question.
 
+The timing results are collected as an implementation reference in [TIMING.md](TIMING.md).
+
+**Integration** ([../INTEGRATION.md](../INTEGRATION.md)): caique-rtl integrates wren7 — the ARM sits on the AICA's
+bus, which caique owns.  **Co-simulation and every combined test (ARM + AICA) are caique's domain**
+(`caique-rtl/rtl/v1/tb/`, caique console cases); wren7 keeps the core, the ARM-side console measurements and
+`DcArmBus` (a measured timing reference and interrupt stand-in, not a second AICA model).  AICA-internal findings
+made with ARM jobs are recorded in caique's `model/NOTES.md`.  Interfaces caique relies on (`Arm7DI::bus_cycle`,
+`Arm7Bus`, `DcArmBus` members, `tools/hwjob.h`) change only together with caique; after changing them run caique's
+`make -C rtl/v1 arb` and `rtl/v1/tb/armjob_all.sh`.
+
 Sources:
 - `docs/DDI0027D_7di_ds.pdf` (ARM7DI data sheet, 1997).  Text dump for grepping: `agents/arm7di.txt`
   (`pdftotext -layout`).  Chapter 9 (per-cycle bus tables) is the timing spec the model follows.
@@ -16,8 +26,11 @@ Sources:
 
 ## Model structure
 
-- `src/arm7di.{h,cpp}`: the core.  `step()` executes one instruction (or one exception entry) as the exact bus-cycle
-  sequence of its chapter 9 table.  Every cycle goes through `Arm7Bus::cycle()` with what the pins carry:
+- `src/arm7di.{h,cpp}`: the core.  The interface is `bus_cycle()`: one call = one bus cycle, so the caller owns
+  time and can run other masters between any two cycles of an instruction.  Each instruction (or exception entry)
+  is a small cycle sequencer (`seq_`, cycle index `k_`, in-flight latches `x_`) producing the exact bus-cycle
+  sequence of its chapter 9 table; `at_boundary()` is true between instructions, where `Arm7Bus::tick()` runs
+  and interrupts are taken.  Every cycle goes through `Arm7Bus::cycle()` with what the pins carry:
   address, cycle type N/S/I/C, nRW, nBW, nOPC, LOCK, nTRANS, write data.  The memory system returns the data, the
   nWAIT stretch and ABORT.  **No latency table anywhere**: an instruction's time is its cycles plus the waits the
   bus adds, so bus timing measured later goes into the bus model, not into the core.
@@ -135,8 +148,9 @@ ARM view, A[31:24] ignored (`addr &= 0x00FFFFFF`):
 | 0x802D04 | M: write bit 0 = interrupt accept (re-arms the latch) |
 
 - FIQ: SCIEB (0x289C) & SCIPD (0x28A0), pending bits 0-10.  The lowest set bit picks L from SCILV0-2
-  (0x28A8/AC/B0; bits >= 7 share SCILV bit 7).  An "e68k" latch holds L and drives nFIQ until M is written.
-  SCIPD bit 5 (SCPU) is settable by writing; SCIRE (0x28A4) clears.  nIRQ is not connected in minicast.
+  (0x28A8/AC/B0; bits >= 7 share SCILV bit 7).  SCIPD bit 5 (SCPU) is settable by writing; SCIRE (0x28A4)
+  clears.  The handshake is measured on the console (see "Interrupts"); minicast's version (any request, M write
+  releases) is wrong.  nIRQ is not connected in minicast.
 - Registers are 16 bits in 32-bit slots (caique).  How ARM word/byte accesses map onto them is unknown: the model
   returns the 16-bit value zero-extended, byte lanes 2/3 read 0 and drop writes.  `AicaRegs` is the hook for
   caique's AICA model.
@@ -201,10 +215,10 @@ Model: **`DcWaits::dreamcast()`** (slot-grid mode of `dc_arm_map`), now the defa
    repeated or 512 KB-apart accesses all cost the same.
 2. The locked write of a **SWP/SWPB lasts 4** (SWP = 24 MCLK in all).
 3. Internal (I) cycles take **1 MCLK**; the next memory cycle waits for the next grid point.
-4. In every 512-MCLK sample frame, **two adjacent phase-4 half slots (t = 52 and 60 mod 512 from the reset release)
-   belong to another wave RAM user**.  An ARM wave RAM access that would start there waits for the ARM's own phase-0
-   slot; AICA register accesses are unaffected.  Phase 0 of the 8-MCLK period is always the ARM's.  The identity
-   is open; two SDRAM refreshes per sample (88,200/s) would fit.
+4. In every 512-MCLK sample frame **two slots belong to another wave RAM user: DSP steps 109 and 111**, i.e. two
+   adjacent odd-step (phase-4) slots 36 and 28 MCLK before the sample edge (first fitted from these kernels as a
+   pair 8 MCLK apart, then placed with the DSP: see "DSP step clock and wave RAM slots").  An ARM wave RAM access
+   that would start there waits for the next step; AICA register accesses are unaffected.
 With all channels off (every channel's monitor reads 0x7FFF) and the DSP program zeroed, this predicts all 105
 kernels to within 0.1 MCLK per iteration (84 fit variants: total squared error 0.011 MCLK^2).  Validation used
 kernels not in the fit, predicted before the console run (`tests/hw/timing/PREDICT.txt`).  16 random instruction
@@ -212,15 +226,161 @@ mixes (ALU, register shifts, MUL/MLA, LDR/STR[B], LDM/STM, SWP[B], AICA register
 unexecuted instructions) all landed within 0.06 MCLK of 530-730-MCLK loops.  So did SWI + `movs pc, lr`, the
 undefined trap + return, LDR PC, a data op to PC and LDM {PC}.
 
-Open (timing):
-- **The blocked half slots' phase relative to the sample edge.**  The 512-iteration averages do not depend on it.
-  An exact cycle-by-cycle trace does, and so does whether ARMRST release is frame-synchronous: the run-to-run
-  spread of the slowed kernels is only a few MCLK, which suggests it is.
-- **Contention** with playing channels, DSP memory ops (MRD/MWT) and SH4/G2 accesses.  All measured here with the
-  sound generator idle and the SH4 off the bus.
-- **Interrupt timing**: FIQ latency through the L/M handshake, the synchroniser (H13).
+### Interrupts (tests/hw/fiqdiag, fiqcost, blkphase, blkshot; `hw/arm/k_fiqlog.s`, `k_fiqcost_*.s`, `k_blk*.s`)
 
-## minicast deviations (for reference, not used)## minicast deviations (for reference, not used)
+- **The one-sample interval (SCIPD bit 10) reaches FIQ only with a non-zero level.**  With SCILV0-2 = 0 the
+  pending, enabled request never interrupts; SCILV0 = 0x80 (level 1) or 0xFF/0xFF/0xFF (level 7) do.  Level 0
+  means "no interrupt", as on the 68000 this controller was designed for.
+- **68000-style handshake**: the request is latched and drives nFIQ.  **Reading L (0x802D00) is the acknowledge**
+  and releases nFIQ; the same handler with a RAM read of identical timing re-enters forever.  **Writing M
+  (0x802D04) = 1 ends the service**: with the L read and no M write the FIQ is released and never comes back.  One M
+  write is enough (KOS's crt0 writes four).
+- SCILV0-2 read back 0 (write-only).  L reads the level latched for the last request (1 after a level-1 job, 7
+  after a level-7 one).
+- **L and M are local to the ARM interface**: LDR L or M = fetch + a 1-MCLK read (no slot), STR M = fetch + 1 MCLK;
+  every other AICA register access takes the 8-MCLK slot (`k_fiqcost_*`: NOP 8, STR SCIRE/SCIEB 16, LDR SCIEB + ORR
+  32, LDR RAM + ORR 32, LDR L/M + ORR 24, STR M 12, console = model on all 8 ops).
+- The model (`dc_arm_map`: sample clock every 512 MCLK, level gating, L-read acknowledge, M re-arm, local L/M)
+  reproduces all 66 phase-locked FIQ sweep points (tests/hw/blkphase: adds per sample, error 0.009).
+- **ARM reset release is frame-synchronous**: single-shot jobs (one FIQ-timed probe, then a count to the next
+  FIQ) give the same count in 3 separate runs at 63 of 66 points, the rest +-1.  So the phase between the ARM's
+  clock count from reset and the sample frame is a constant of the console.  This also explains why the
+  slowed timing kernels reproduced to a few MCLK.
+
+### DSP step clock and wave RAM slots (tests/hw/dspport, dspmem, dspmem1, dspmem1r; `hw_suite check ...`)
+
+The AICA manual's buffer-timing table: each DSP step is two slots, the first for the DSP's own read (DSPR), the
+second the CPU port (DMSP), which TEMP and EFREG share with DSP writes (DSPW).  Everything below is measured against
+it and against DSP programs written by the ARM into MPRO (`hw/arm/k_dspport*.s`, `k_dspmem_*.s`; programs in
+`tests/hw/dsp*/mpro_*.bin`).
+- **One DSP step = 4 MCLK** (128 steps = 512 MCLK = one sample), and the step boundaries are the 4-MCLK grid
+  every ARM memory cycle starts on.  A block of 16 TEMP-writing steps (TWT) delays an FIQ-locked ARM read of TEMP
+  by exactly the rest of the block (a 64-MCLK plateau); moving the block by 32 steps moves it by 128 MCLK.
+  TEMP accesses outside writing steps cost the normal 8.  (EFREG is modelled from the manual, not measured.)
+- **Wave RAM has one slot per DSP step.**  An ARM access may start only at the boundary of a step whose slot is
+  free and then takes 8 MCLK; the next step's slot stays usable by others (DSP reads at odd steps do not slow a
+  phase-0 stream).  **Every DSP MRD or MWT takes the slot of its own step**: reads and writes, odd or even steps,
+  all the same (single access at each of the 128 steps x read/write x nop/rsh kernels: 512/512).
+- **The "blocked pair" is another user holding the slots of DSP steps 109 and 111 in every sample** (the only
+  odd steps where a single DSP access slows an even-step ARM stream).  When the DSP holds one of them it moves one
+  step earlier or later, the two staying >= 2 steps apart, earliest first (DSP at 109 -> 108/111, at 111 ->
+  109/112, every odd step -> 108/110: 44/44 multi-access programs).  Identity unknown (SDRAM refresh would fit:
+  2 per sample = 88,200/s).
+- **Phase, unique across 478 FIQ-timed points** (dspport 330, blkshot 66, blkphase 66, fiqcost 16; 8 of 1584
+  combinations fit, all the same except for an irrelevant port offset; next best 21 misses): **DSP step 0 starts
+  exactly 40 MCLK (10 steps) after the one-sample interrupt edge; the edge lies on a step boundary (step 118)
+  and is recognised at the end of the instruction in which it falls, with no extra latency.**  So the other
+  user's slots are 36 and 28 MCLK before each sample edge.
+- Why an idle ARM stream never sees them: it settles on the even steps; the pair is on odd steps.  A phase-4
+  (odd) access is delayed by 4 only when it meets one of them.
+- Model: `DcWaits::dreamcast()` (`dsp_slots`), `DcArmBus::dsp_phase` = 40, `sample_phase` = 0, `edge_latency` = 0,
+  `fixed_steps` = {109, 111}; slots and TEMP/EFREG port conflicts are decoded from MPRO as the CPU wrote it (the
+  DSP itself is not executed by this model).
+
+### Contention: sound channels and SH4 traffic (tests/hw/sgc, sgcadp, sh4load, combo, collide, collide2)
+
+- **A keyed-on channel K takes one wave RAM slot per sample, at DSP step (2K - 14) mod 128**, always an even step:
+  channel 7 at step 0, channel 0 at 114, channel 62 at 110 (between the fixed pair).  Each of the 64 channels alone
+  reproduces, point for point, the single DSP access map at that step: an even-step loop always loses 8.6 U per
+  iteration, and the register-shift loop shows that step's signature (channel 62's unique 7.8 = step 110's).
+  All 64 channels = every even step: the exact mirror of 64 odd-step DSP reads (nop +17.6, rsh +144.8, ldr +72.2,
+  str +9.3 on both).  (runner: `quiet` + `areg` directives; silent looped data, no sends.)
+- **PCM16 and PCM8: one fetch per sample at every pitch measured** (OCT -2..+7).
+- **ADPCM** (PCMS 2 and 3 alike), share of samples with a fetch: OCT -2 0.31, -1 0.37, 0 and +1 0.5, +2 1, +3 0
+  (the channel apparently stops).
+  - **Rule (2026-09-24, from these measurements and caique rtl/v1): the channel holds one 16-bit word of its
+    stream; a sample fetches when the play position enters another word, or when the look-ahead nibble (position
+    + 1, the interpolation's second sample) lies in the next word; at most one fetch per sample; none at OCT 3..7.**
+    Shares 5/16, 3/8, 1/2, 1/2, 1 -- the measured ones.  No 8- or 32-bit unit fits (a byte gives 1 at OCT 0 and +1;
+    a 32-bit word 1/4 at OCT 0 and 3/16 at -1), nor does fetching only when the position crosses (OCT 0: 1/4).
+  - The pattern matters, not only the rate: the register-shift kernels at OCT -1 / 0 / +1 moved by up to 0.33 MCLK
+    per iteration between the old evenly spread fetches and the rule (sgc f_adp_o0_rsh: console 416.86, spread
+    417.19, rule 416.87).  With the rule: sgc 176/176 within 0.1 (was 175/176), sgcadp 36/36 within 0.1, worst
+    0.04 (was 0.32, checked at 0.5 before; `hw_suite check sgcadp` now uses 0.1).
+  - Model: `DcArmBus::adpcm_fetch` replaces `adpcm_rate`.  The position runs from `adpcm_origin` (the SGC sample
+    where it is 0; default 0 = the ARM's reset release) with the pitch accumulator ((1024 + FNS) << (OCT + 4)) /
+    2^14 nibbles per sample; loops are not modelled (the suites' LEA is never reached).  The SGC sample of a
+    slot is its DSP sample, except channels 0-6 (steps 114-126, the end of the DSP sample), whose fetch already
+    belongs to the next one (caique rtl/v1's frame order).  The console's phase between key-on and the ARM's
+    reset release is not known; the per-iteration costs do not depend on it.
+- **SH4 register traffic costs the ARM nothing**: register reads (12.8 per sample, flat out) and writes (43 per
+  sample) leave every ARM kernel within 0.05 U.
+- **SH4 wave RAM writes** (posted; 42.5 per sample flat out) **take one slot each**, the first free step boundary
+  after they arrive, ahead of the ARM: the model reproduces the flat-out cost to 0.5% and paced writes to ~0.2 U.
+- **SH4 wave RAM reads take two slots 8 MCLK apart; the data is back 24 MCLK after the second, and the next read
+  issues then** (one read per 40 MCLK = 12.8 per sample flat out).  That round trip is what makes flat-out reads
+  cost twice what random single slots would: it matches all four kernels at the flat-out rate within 0.06 U.
+  Paced reads are within 0.5 U, except ldr at a 2000-SH4-cycle gap (1.8 vs 3.8 U).
+- G2 is not synchronous to the AICA, so SH4 arrival times are an input to the model (`DcArmBus::sh4_access(t,
+  slots)`, or the periodic generator used by the tests, averaged over 8 phases).
+- **Composition, predicted before the console run** (tests/hw/combo): channels + DSP programs together 12/12
+  within 0.11 U per iteration (0.04%); with SH4 writes added, 0.02-1.7%.  The worst case is flat-out writes with
+  4 channels (+1.7%): the model keeps the idle-bus write rate, while on the console occupied slots presumably also
+  slow the SH4's write stream.
+- **A channel fetch and a DSP access on the same slot: the channel wins, and the collision takes one slot.**
+  - Timing (tests/hw/collide, `hw_suite check collide`): channel K plus a DSP MRD or MWT at its step 2K - 14, for
+    K = 10, 20, 30, 40, 61, 62, 63 (61-63 = steps 108/110/112, around the fixed pair).  Each ARM kernel loses exactly
+    what it loses to either access alone, and the fixed pair does not move: 196/196 within 0.1 U, model unchanged
+    (`slot_used` already counts a step once).  The same DSP access 2 steps later adds its own slot.
+  - Functional (tests/hw/collide2, `hw_suite check collide2`, 32/32; read back with the ARM in reset):
+    - a DSP **MWT** in a channel's slot is **dropped**: word 32 keeps its prefill 0x5555 (4/4; 28/28 kernels in
+      collide with the ARM running), while the same write alone or 2 steps later stores its 0x1E1E;
+    - a DSP **MRD** in a channel's slot **returns the channel's word**: MEMS0 = the ramp word 0xA0xx << 8 in place of
+      the 0x1234 it addressed (4/4), and 0x123400 alone or 2 steps later;
+    - the **channel's fetch is unaffected**: MIXS0 follows its ramp every sample in both collision cases.
+  - For the AICA side this means: the channel owns the slot, the DSP's write strobe is suppressed, and the DSP's read
+    takes whatever the channel put in the memory read latch.
+- **ARM reads can replace an even-step MRD's result** (side finding of collide, not needed for the ARM's timing).
+  With the ARM running, an MRD at an even step s with its IWT at s+3 often returns an ARM word instead of its own:
+  low halves of ARM fetches, e.g. 0x0211 (from `add r0, r0, r1, lsl r2` = 0xE0800211) and 0xF100 (the 0x1FF100
+  literal).  It never happens at steps 108 and 110, whose next slot (109, 111) belongs to the fixed user (12/12
+  clean), nor with the ARM in reset (collide2 4/4).  That fits an ARM read in slot s+1 reaching the shared read latch
+  before the DSP's IWT copy (caique: an even-step MRD lands at s+3, "until the next read lands").  Which ARM
+  reads do it is not pinned: MEMS0 is taken in the kernel's last sample, whose ARM slot pattern depends on the
+  ARMRST phase the model does not know.  Test writers: read DSP results with the ARM in reset (runner `rreg`).
+- Harness: the runner's `quiet` now runs *before* the loads.  It used to run after them, and the previous job's DSP
+  program kept writing the freshly loaded RAM until `quiet` cleared MPRO (the first collide2 run showed it on the
+  jobs with no program).
+
+Open (timing):
+- **Who owns the slots of DSP steps 109 and 111**, and what the "move by one, stay >= 2 apart" rule really is
+  (measured only for DSP accesses at 109, 111, 110 and every odd step).
+- Why ADPCM stops at OCT +3 (and what the channel outputs then); SH4 arrival timing beyond the two generator
+  models (G2 DMA is not measured at all).
+  EFREG port conflicts are not measured.
+- Functional, not timing: exactly which ARM reads replace an even-step MRD's result (slot s+1 is the hypothesis).
+
+### Cross-check: caique rtl/v1 as the bus (2026-09-24)
+
+(The harnesses and their current results are caique's: `caique-rtl/INTEGRATION.md`, "Combined tests".)
+
+caique-rtl `rtl/v1` (the AICA RTL) implements this section's slot rules in hardware form: one wave RAM slot per DSP
+step, claimed by the step's MRD / MWT, by channel K's fetch at step 2K - 14 and by the fixed pair (placed from MPRO
+rows 108-112 read ahead), then the SH4, then the ARM; a separate register lane (TEMP / EFREG wait for TWT / EWT);
+an ARM cycle of 8 MCLK from its step boundary (locked write 4), L / M in one.  Its `tb/armjob_tb.cpp` runs a job
+file on this model's `Arm7DI` with the RTL as the bus (`bus_cycle()` makes that possible: the harness owns time),
+with a shadow `DcArmBus` fed the same cycles as the per-cycle oracle and as the interrupt controller (not in the
+RTL yet).  Time: t_rtl = t + 24 + 512 x 8 (the RTL's DSP step 0 is 64 clocks into its slot sweep).
+- **All 19 suites, 3424 jobs: every job ends on the same clock and every one of 143 M memory cycles has the same
+  wait** (`rtl/v1/tb/armjob_all.sh`; SH4 suites at 8 stream phases, as `check_timed` averages).  Per kernel, the
+  RTL is therefore within the tolerances of section "Contention" of the console too
+  (`build/rtl_v1/armjob_console`: dspmem 44/44, dspmem1 511/512, dspmem1r 7/7, sgc 176/176, collide 196/196,
+  sgcadp 36/36, sh4load and combo as the model).
+- It found the ADPCM rule above: the RTL's channel fetches as the hardware would (a word register), which matched
+  the console where the evenly spread model did not; the rule then went into `adpcm_fetch`.  The only other
+  differences were in the harness (SH4 stream arrivals truncated to the MCLK, the read's last slot).
+- Functional readouts (`armjob_tb -w DIR`, `hw_suite check collide2 DIR`): collide2 32/32 on the RTL.  The channel's
+  MIXS0 ramp read at any phase needed the RTL's MIXS writes aligned with the DSP's sample and the CPU reading the
+  DSP's bank (reading the bank being filled fails 12/12 channel cases).  The channel-wins rule is pinned sample by
+  sample by caique `model/tests/dsp_coll` (console = caique model 18/18 runs, RTL = model bit-exact): the DSP's
+  MWT in the slot is dropped exactly in the samples the channel fetches (ADPCM OCT -1: 3 of 8), and its MRD returns
+  the 16-bit word holding the channel's sample CA + 1; channels 0-6 (steps 114-126) collide with their fetch of the
+  next sample; the first fetch after a key-on is in the sample that outputs CA 0.  Not modelled on either side: the
+  shared read latch of the side finding above (collide with the ARM running: MEMS0 of even-step reads).
+- Harness changes here: `hwjob.h` parses `rreg` (into `HwJob::rregs`, for AICA harnesses; the model has no DSP to
+  read), `run_job_model(..., adpcm_origin)`, `hw_suite check collide2 [DIR]`.
+
+## minicast deviations (for reference, not used)
 
 minicast's ARM core is vba-arm (a GBA ARM7TDMI interpreter).  It implements ARMv4 LDRH/STRH/LDRSB/LDRSH and BX,
 which the ARM7DI does not have (long multiplies are `#if 0`, "only on arm7tm").  It keeps no bus timing
@@ -235,6 +395,8 @@ which the ARM7DI does not have (long multiplies are `#if 0`, "only on arm7tm"). 
   plus a 1.1 M-case sweep (seeds 1000-1024 and 100000-100249, not kept, reproducible with `--gen --seed`): 0
   mismatches.  qemu-user does not rotate misaligned LDR (verified: it returns the unaligned word), so misaligned
   words are excluded there; the vendor LDR tests cover rotation.
+- The console job suites on caique rtl/v1 as the bus: 3424 jobs cycle-identical to `DcArmBus` (see "Cross-check:
+  caique rtl/v1").
 - Mutation checks: a wrong STM write-back point fails STM_2/3/4, missing LDR rotation fails 12 LDR tests, ADC without
   carry fails ADC_1, RSC with a forced carry fails 56 qemu_diff cases, a wrong LSL-by-32 carry is caught by qemu_diff.
 

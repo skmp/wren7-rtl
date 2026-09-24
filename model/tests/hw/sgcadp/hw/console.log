@@ -1,0 +1,105 @@
+hwrun: 00:00:35 lock taken by pid 972347 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac0727e0
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55777875 SH4 cycles
+p2_om2_nop_n64                   done    418176
+p2_om2_nop_n576                  done    2891062
+p2_om2_rsh_n64                   done    344784
+p2_om2_rsh_n576                  done    2230242
+p2_om1_nop_n64                   done    418482
+p2_om1_nop_n576                  done    2893760
+p2_om1_rsh_n64                   done    344730
+p2_om1_rsh_n576                  done    2230900
+p2_o0_nop_n64                    done    419194
+p2_o0_nop_n576                   done    2899428
+p2_o0_rsh_n64                    done    344904
+p2_o0_rsh_n576                   done    2230442
+p2_o1_nop_n64                    done    419126
+p2_o1_nop_n576                   done    2899268
+p2_o1_rsh_n64                    done    344834
+p2_o1_rsh_n576                   done    2232186
+p2_o2_nop_n64                    done    421730
+p2_o2_nop_n576                   done    2921640
+p2_o2_rsh_n64                    done    345228
+p2_o2_rsh_n576                   done    2232360
+p2_o3_nop_n64                    done    416556
+p2_o3_nop_n576                   done    2877394
+p2_o3_rsh_n64                    done    344730
+p2_o3_rsh_n576                   done    2229816
+p3_om2_nop_n64                   done    418210
+p3_om2_nop_n576                  done    2890980
+p3_om2_rsh_n64                   done    344738
+p3_om2_rsh_n576                  done    2230144
+p3_om1_nop_n64                   done    418532
+p3_om1_nop_n576                  done    2893892
+p3_om1_rsh_n64                   done    344892
+p3_om1_rsh_n576                  done    2230920
+p3_o0_nop_n64                    done    419288
+p3_o0_nop_n576                   done    2899400
+p3_o0_rsh_n64                    done    344722
+p3_o0_rsh_n576                   done    2230488
+p3_o1_nop_n64                    done    419296
+p3_o1_nop_n576                   done    2899236
+p3_o1_rsh_n64                    done    344874
+p3_o1_rsh_n576                   done    2231952
+p3_o2_nop_n64                    done    421832
+p3_o2_nop_n576                   done    2921720
+p3_o2_rsh_n64                    done    345372
+p3_o2_rsh_n576                   done    2232310
+p3_o3_nop_n64                    done    416588
+p3_o3_nop_n576                   done    2877442
+p3_o3_rsh_n64                    done    344676
+p3_o3_rsh_n576                   done    2229928
+p0_om2_nop_n64                   done    421778
+p0_om2_nop_n576                  done    2921666
+p0_om2_rsh_n64                   done    345158
+p0_om2_rsh_n576                  done    2232484
+p0_om1_nop_n64                   done    421722
+p0_om1_nop_n576                  done    2921694
+p0_om1_rsh_n64                   done    345212
+p0_om1_rsh_n576                  done    2232382
+p0_o0_nop_n64                    done    421732
+p0_o0_nop_n576                   done    2921700
+p0_o0_rsh_n64                    done    345150
+p0_o0_rsh_n576                   done    2232246
+p0_o1_nop_n64                    done    421670
+p0_o1_nop_n576                   done    2921750
+p0_o1_rsh_n64                    done    345220
+p0_o1_rsh_n576                   done    2232308
+p0_o2_nop_n64                    done    421758
+p0_o2_nop_n576                   done    2921594
+p0_o2_rsh_n64                    done    345104
+p0_o2_rsh_n576                   done    2232328
+p0_o3_nop_n64                    done    421794
+p0_o3_nop_n576                   done    2921600
+p0_o3_rsh_n64                    done    345216
+p0_o3_rsh_n576                   done    2232322
+72 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 469, dma_cntr = 443
+vid_set_mode: 640x480 VGA with 1 framebuffers.

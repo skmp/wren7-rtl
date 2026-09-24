@@ -3,13 +3,15 @@
 Bus-cycle accurate C++ model of the ARM7DI, the Dreamcast AICA's sound CPU.  It is the reference for the RTL that
 comes next.  Timing comes from the data sheet's per-cycle bus sequences plus the memory system.
 `DcWaits::dreamcast()` holds the timing measured on the console (22.5792 MHz core, 4-MCLK slot grid, 8-MCLK
-accesses).  It predicts every console timing kernel to within 0.1 MCLK per iteration.  Findings, choices and open hardware questions: **[NOTES.md](NOTES.md)**.
+accesses).  It predicts every console timing kernel to within 0.1 MCLK per iteration.  Findings, choices and open hardware questions: **[NOTES.md](NOTES.md)**.  The measured timing as an implementation
+reference: **[TIMING.md](TIMING.md)**.  Integration into the AICA (caique-rtl owns the bus and every combined test):
+**[../INTEGRATION.md](../INTEGRATION.md)**.
 
 ## Layout
 
 | path | what |
 |---|---|
-| `src/arm7di.{h,cpp}` | the core: `step()` = one instruction / exception entry as its chapter 9 bus-cycle sequence |
+| `src/arm7di.{h,cpp}` | the core: `bus_cycle()` = one bus cycle of the instruction / exception entry sequencer (chapter 9 tables); `at_boundary()` between instructions |
 | `src/dc_arm_map.{h,cpp}` | the Dreamcast sound bus as an `Arm7Bus`: 2 MB wave RAM, AICA register window, FIQ glue, `DcWaits` |
 | `tools/wren7run.cpp` | run a raw binary in the Dreamcast map (traces, waits, dumps) |
 | `tools/vendor_tests.cpp` | the vendor suite (`../vendor/arm7di-tests-dreamcast/bins`) |

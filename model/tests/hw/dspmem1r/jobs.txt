@@ -1,0 +1,86 @@
+# re-run of the dspmem1 kernels that were 0.10-0.14 MCLK off (single repeat there), 5 repeats
+out tests/hw/dspmem1r/hw
+job r065_rsh_n64 2000 5
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r065.bin
+word 0x20 64
+run
+job r065_rsh_n576 2000 5
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r065.bin
+word 0x20 576
+run
+job r110_nop_n64 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r110.bin
+word 0x20 64
+run
+job r110_nop_n576 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r110.bin
+word 0x20 576
+run
+job r111_nop_n64 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r111.bin
+word 0x20 64
+run
+job r111_nop_n576 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r111.bin
+word 0x20 576
+run
+job w072_rsh_n64 2000 5
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_w072.bin
+word 0x20 64
+run
+job w072_rsh_n576 2000 5
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_w072.bin
+word 0x20 576
+run
+job w111_nop_n64 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_w111.bin
+word 0x20 64
+run
+job w111_nop_n576 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_w111.bin
+word 0x20 576
+run
+job r109_rsh_n64 2000 5
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r109.bin
+word 0x20 64
+run
+job r109_rsh_n576 2000 5
+load 0 ../build/hw/arm/k_dspmem_rsh.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r109.bin
+word 0x20 576
+run
+job r000_nop_n64 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r000.bin
+word 0x20 64
+run
+job r000_nop_n576 2000 5
+load 0 ../build/hw/arm/k_dspmem_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+load 0x20000 tests/hw/dspmem1/mpro_r000.bin
+word 0x20 576
+run

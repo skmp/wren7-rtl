@@ -1,0 +1,231 @@
+hwrun: 23:08:41 lock taken by pid 881566 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac06f820
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55784102 SH4 cycles
+bs31a                            done    37663
+bs31b                            done    34867
+bs31c                            done    37509
+bs32a                            done    34217
+bs32b                            done    36155
+bs32c                            done    33759
+bs33a                            done    34049
+bs33b                            done    34391
+bs33c                            done    35459
+bs34a                            done    33585
+bs34b                            done    34991
+bs34c                            done    34963
+bs35a                            done    35017
+bs35b                            done    34433
+bs35c                            done    37301
+bs36a                            done    34509
+bs36b                            done    37263
+bs36c                            done    33947
+bs37a                            done    33733
+bs37b                            done    34931
+bs37c                            done    33249
+bs38a                            done    33841
+bs38b                            done    33417
+bs38c                            done    34819
+bs39a                            done    36001
+bs39b                            done    35527
+bs39c                            done    37009
+bs40a                            done    37495
+bs40b                            done    35885
+bs40c                            done    35451
+bs41a                            done    36639
+bs41b                            done    35213
+bs41c                            done    35839
+bs42a                            done    34639
+bs42b                            done    37539
+bs42c                            done    35797
+bs43a                            done    37215
+bs43b                            done    37077
+bs43c                            done    33403
+bs44a                            done    34875
+bs44b                            done    36157
+bs44c                            done    36077
+bs45a                            done    34107
+bs45b                            done    33577
+bs45c                            done    34771
+bs46a                            done    37155
+bs46b                            done    35537
+bs46c                            done    36589
+bs47a                            done    35159
+bs47b                            done    34857
+bs47c                            done    37079
+bs48a                            done    35503
+bs48b                            done    35611
+bs48c                            done    37559
+bs49a                            done    35851
+bs49b                            done    35353
+bs49c                            done    33955
+bs50a                            done    34231
+bs50b                            done    37081
+bs50c                            done    37371
+bs51a                            done    37459
+bs51b                            done    35783
+bs51c                            done    37293
+bs52a                            done    36299
+bs52b                            done    34293
+bs52c                            done    36877
+bs53a                            done    34257
+bs53b                            done    35405
+bs53c                            done    36719
+bs54a                            done    34525
+bs54b                            done    34931
+bs54c                            done    34661
+bs55a                            done    33945
+bs55b                            done    34827
+bs55c                            done    34731
+bs56a                            done    33669
+bs56b                            done    36975
+bs56c                            done    36511
+bs57a                            done    36543
+bs57b                            done    35341
+bs57c                            done    35889
+bs58a                            done    35361
+bs58b                            done    34279
+bs58c                            done    34371
+bs59a                            done    34425
+bs59b                            done    37407
+bs59c                            done    36533
+bs60a                            done    34559
+bs60b                            done    33503
+bs60c                            done    35831
+bs61a                            done    35079
+bs61b                            done    34911
+bs61c                            done    33945
+bs62a                            done    36585
+bs62b                            done    36945
+bs62c                            done    35349
+bs63a                            done    36969
+bs63b                            done    35467
+bs63c                            done    34811
+bt31a                            done    37141
+bt31b                            done    33817
+bt31c                            done    35485
+bt32a                            done    36273
+bt32b                            done    36887
+bt32c                            done    35951
+bt33a                            done    36585
+bt33b                            done    37557
+bt33c                            done    33783
+bt34a                            done    35671
+bt34b                            done    33249
+bt34c                            done    35567
+bt35a                            done    34217
+bt35b                            done    36033
+bt35c                            done    36365
+bt36a                            done    34163
+bt36b                            done    36165
+bt36c                            done    37241
+bt37a                            done    33883
+bt37b                            done    34325
+bt37c                            done    36833
+bt38a                            done    35789
+bt38b                            done    37611
+bt38c                            done    35999
+bt39a                            done    37197
+bt39b                            done    35413
+bt39c                            done    33829
+bt40a                            done    35077
+bt40b                            done    35299
+bt40c                            done    36799
+bt41a                            done    35457
+bt41b                            done    34177
+bt41c                            done    36741
+bt42a                            done    36755
+bt42b                            done    35957
+bt42c                            done    36389
+bt43a                            done    33475
+bt43b                            done    33233
+bt43c                            done    33841
+bt44a                            done    35357
+bt44b                            done    37331
+bt44c                            done    35189
+bt45a                            done    35729
+bt45b                            done    37195
+bt45c                            done    35613
+bt46a                            done    33445
+bt46b                            done    37015
+bt46c                            done    36279
+bt47a                            done    36801
+bt47b                            done    34231
+bt47c                            done    35215
+bt48a                            done    33733
+bt48b                            done    37083
+bt48c                            done    34483
+bt49a                            done    33795
+bt49b                            done    37047
+bt49c                            done    35887
+bt50a                            done    37087
+bt50b                            done    35257
+bt50c                            done    33301
+bt51a                            done    35837
+bt51b                            done    36555
+bt51c                            done    35077
+bt52a                            done    36073
+bt52b                            done    36485
+bt52c                            done    34973
+bt53a                            done    37611
+bt53b                            done    36667
+bt53c                            done    36767
+bt54a                            done    36855
+bt54b                            done    36187
+bt54c                            done    35067
+bt55a                            done    34975
+bt55b                            done    36457
+bt55c                            done    36647
+bt56a                            done    34587
+bt56b                            done    35565
+bt56c                            done    36863
+bt57a                            done    35911
+bt57b                            done    33825
+bt57c                            done    33451
+bt58a                            done    37077
+bt58b                            done    34269
+bt58c                            done    33299
+bt59a                            done    34017
+bt59b                            done    33853
+bt59c                            done    37583
+bt60a                            done    34123
+bt60b                            done    35253
+bt60c                            done    37379
+bt61a                            done    35767
+bt61b                            done    34795
+bt61c                            done    33467
+bt62a                            done    35355
+bt62b                            done    36433
+bt62c                            done    35287
+bt63a                            done    36059
+bt63b                            done    35357
+bt63c                            done    36637
+198 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 273, dma_cntr = 232
+vid_set_mode: 640x480 VGA with 1 framebuffers.

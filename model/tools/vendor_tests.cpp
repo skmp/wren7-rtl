@@ -49,9 +49,12 @@ int main(int argc, char **argv)
         bus.attach(&cpu);
         const uint64_t exc0 = cpu.stats.exceptions;
         bool stopped = false;
-        while (cpu.cycles < 1000000) {
-            if (cpu.exec_word() == 0xDEADBEEF) { stopped = true; break; }
-            cpu.step();
+        for (;;) {   /* stop conditions are checked at instruction boundaries */
+            if (cpu.at_boundary()) {
+                if (cpu.cycles >= 1000000) break;
+                if (cpu.exec_word() == 0xDEADBEEF) { stopped = true; break; }
+            }
+            cpu.bus_cycle();
         }
         const uint32_t r1 = cpu.reg(1), r2 = cpu.reg(2);
         const bool exc = cpu.stats.exceptions != exc0;

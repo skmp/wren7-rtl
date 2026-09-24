@@ -228,14 +228,15 @@ int main()
         for (uint32_t i = 0; i < 16; i++) bus.wr32(D + 4 * i, 0x03020100 + 0x04040404 * i);
         bus.wr32(D, 0x03020100);
         Arm7DI cpu(&bus);
-        while (cpu.exec_addr() != PC) cpu.step();
+        auto insn = [&]() { do cpu.bus_cycle(); while (!cpu.at_boundary()); };   /* one instruction / entry */
+        while (cpu.exec_addr() != PC) insn();
         if (k.setup) k.setup(cpu, bus);
         bus.rec = true;
-        cpu.step();
+        insn();
         const size_t n = bus.log.size();
         cpu.set_irq(false);
         cpu.set_fiq(false);
-        cpu.step();   /* first cycle of the following instruction carries the announced type */
+        insn();   /* first cycle of the following instruction carries the announced type */
         std::string err;
         if (n != k.rows.size()) err = "cycles " + std::to_string(n) + " want " + std::to_string(k.rows.size());
         for (size_t i = 0; err.empty() && i < n; i++) {

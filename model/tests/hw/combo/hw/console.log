@@ -1,0 +1,81 @@
+hwrun: 00:07:02 lock taken by pid 980442 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac0729e0
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55778742 SH4 cycles
+c16_dr16_nop_n64                 done    471821
+c16_dr16_nop_n576                done    3284217
+c16_dr16_rsh_n64                 done    399423
+c16_dr16_rsh_n576                done    2635807
+c16_dr16_ldr_n64                 done    366521
+c16_dr16_ldr_n576                done    2334805
+c16_dr16_str_n64                 done    306031
+c16_dr16_str_n576                done    1795225
+c16_dr16e_nop_n64                done    424619
+c16_dr16e_nop_n576               done    2924577
+c16_dr16e_rsh_n64                done    386673
+c16_dr16e_rsh_n576               done    2580949
+c16_dr16e_ldr_n64                done    333451
+c16_dr16e_ldr_n576               done    2104757
+c16_dr16e_str_n64                done    277587
+c16_dr16e_str_n576               done    1601049
+c8odd_w16o_nop_n64               done    443657
+c8odd_w16o_nop_n576              done    3068901
+c8odd_w16o_rsh_n64               done    380755
+c8odd_w16o_rsh_n576              done    2504309
+c8odd_w16o_ldr_n64               done    341315
+c8odd_w16o_ldr_n576              done    2142157
+c8odd_w16o_str_n64               done    289231
+c8odd_w16o_str_n576              done    1679471
+c16_dr16_sw2000_nop_n64          done    481830
+c16_dr16_sw2000_nop_n576         done    3360158
+c16_dr16_sw2000_rsh_n64          done    402960
+c16_dr16_sw2000_rsh_n576         done    2648554
+c16_dr16_sw2000_ldr_n64          done    368642
+c16_dr16_sw2000_ldr_n576         done    2350976
+c16_dr16_sw2000_str_n64          done    312128
+c16_dr16_sw2000_str_n576         done    1837018
+c32_dr32_sw8000_nop_n64          done    562078
+c32_dr32_sw8000_nop_n576         done    3950038
+c32_dr32_sw8000_rsh_n64          done    454386
+c32_dr32_sw8000_rsh_n576         done    2991726
+c32_dr32_sw8000_ldr_n64          done    419504
+c32_dr32_sw8000_ldr_n576         done    2663492
+c32_dr32_sw8000_str_n64          done    363010
+c32_dr32_sw8000_str_n576         done    2156974
+c4_sw0_nop_n64                   done    608274
+c4_sw0_nop_n576                  done    4355878
+c4_sw0_rsh_n64                   done    392058
+c4_sw0_rsh_n576                  done    2403010
+c4_sw0_ldr_n64                   done    387926
+c4_sw0_ldr_n576                  done    2372474
+c4_sw0_str_n64                   done    388074
+c4_sw0_str_n576                  done    2371066
+48 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 578, dma_cntr = 433
+vid_set_mode: 640x480 VGA with 1 framebuffers.

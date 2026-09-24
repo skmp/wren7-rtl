@@ -74,10 +74,13 @@ int main(int argc, char **argv)
     if (itrace) cpu.insn_trace = open_out(itrace);
 
     const char *why = "max-cycles";
-    while (cpu.cycles < max_cycles) {
-        if (cpu.exec_word() == stop_word) { why = "stop-word"; break; }
-        if (cpu.exec_addr() == stop_addr) { why = "stop-addr"; break; }
-        cpu.step();
+    for (;;) {   /* stop conditions are checked at instruction boundaries */
+        if (cpu.at_boundary()) {
+            if (cpu.cycles >= max_cycles) break;
+            if (cpu.exec_word() == stop_word) { why = "stop-word"; break; }
+            if (cpu.exec_addr() == stop_addr) { why = "stop-addr"; break; }
+        }
+        cpu.bus_cycle();
     }
     printf("stop: %s at %08x (%08x)\n", why, cpu.exec_addr(), cpu.exec_word());
     for (int r = 0; r < 16; r++) printf("r%-2d=%08x%s", r, cpu.reg(r), (r & 3) == 3 ? "\n" : "  ");

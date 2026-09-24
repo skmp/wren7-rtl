@@ -1,0 +1,53 @@
+m0_g0_nop            console   544.01 model   544.00
+m0_g0_rsh            console   416.74 model   416.75
+m0_g0_ldr            console   354.44 model   354.45
+m0_g0_str            console   287.99 model   288.00
+m1_g0_nop            console   556.16 model   556.17
+m1_g0_rsh            console   462.65 model   462.66
+m1_g0_ldr            console   365.73 model   365.71
+m1_g0_str            console   294.47 model   294.45
+m1_g2000_nop         console   552.55 model   552.22
+m1_g2000_rsh         console   424.23 model   423.69
+m1_g2000_ldr         console   356.19 model   358.22  DIFFERENT
+m1_g2000_str         console   292.23 model   292.36
+m1_g8000_nop         console   547.05 model   546.65
+m1_g8000_rsh         console   418.98 model   419.06
+m1_g8000_ldr         console   354.54 model   354.53
+m1_g8000_str         console   289.63 model   289.39
+m2_g0_nop            console   818.86 model   814.45  DIFFERENT
+m2_g0_rsh            console   433.79 model   436.04  DIFFERENT
+m2_g0_ldr            console   433.54 model   433.76
+m2_g0_str            console   433.43 model   431.18  DIFFERENT
+m2_g2000_nop         console   553.34 model   551.78
+m2_g2000_rsh         console   420.45 model   420.06
+m2_g2000_ldr         console   356.45 model   356.78
+m2_g2000_str         console   292.94 model   292.12
+m2_g8000_nop         console   546.48 model   546.50
+m2_g8000_rsh         console   418.22 model   418.04
+m2_g8000_ldr         console   354.44 model   354.46
+m2_g8000_str         console   289.40 model   289.32
+m3_g0_nop            console   544.01 model   544.00
+m3_g0_rsh            console   416.80 model   416.75
+m3_g0_ldr            console   354.47 model   354.45
+m3_g0_str            console   288.03 model   288.00
+m3_g2000_nop         console   543.99 model   544.00
+m3_g2000_rsh         console   416.73 model   416.75
+m3_g2000_ldr         console   354.47 model   354.45
+m3_g2000_str         console   288.02 model   288.00
+m3_g8000_nop         console   544.00 model   544.00
+m3_g8000_rsh         console   416.71 model   416.75
+m3_g8000_ldr         console   354.43 model   354.45
+m3_g8000_str         console   288.02 model   288.00
+m4_g0_nop            console   543.93 model   544.00
+m4_g0_rsh            console   416.77 model   416.75
+m4_g0_ldr            console   354.42 model   354.45
+m4_g0_str            console   288.01 model   288.00
+m4_g2000_nop         console   544.02 model   544.00
+m4_g2000_rsh         console   416.75 model   416.75
+m4_g2000_ldr         console   354.49 model   354.45
+m4_g2000_str         console   287.99 model   288.00
+m4_g8000_nop         console   543.99 model   544.00
+m4_g8000_rsh         console   416.72 model   416.75
+m4_g8000_ldr         console   354.44 model   354.45
+m4_g8000_str         console   288.01 model   288.00
+48/52 kernels within 2.00 MCLK per iteration (DcWaits::dreamcast)

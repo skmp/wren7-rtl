@@ -1,0 +1,65 @@
+hwrun: 23:04:50 lock taken by pid 879857 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac06f820
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55780540 SH4 cycles
+nop_c0_n256                      done    1166425
+nop_c0_n2304                     done    10429875
+nop_c4_n256                      done    1166649
+nop_c4_n2304                     done    10431905
+strm_c0_n256                     done    1166661
+strm_c0_n2304                    done    10428775
+strm_c4_n256                     done    1167715
+strm_c4_n2304                    done    10428393
+strre_c0_n256                    done    1165765
+strre_c0_n2304                   done    10430011
+strre_c4_n256                    done    1165313
+strre_c4_n2304                   done    10430799
+ldrl_c0_n256                     done    1166741
+ldrl_c0_n2304                    done    10431073
+ldrl_c4_n256                     done    1168363
+ldrl_c4_n2304                    done    10431373
+ldrm_c0_n256                     done    1164641
+ldrm_c0_n2304                    done    10431159
+ldrm_c4_n256                     done    1166865
+ldrm_c4_n2304                    done    10430307
+ldrram_c0_n256                   done    1166945
+ldrram_c0_n2304                  done    10429419
+ldrram_c4_n256                   done    1166283
+ldrram_c4_n2304                  done    10431205
+ldrreg_c0_n256                   done    1163967
+ldrreg_c0_n2304                  done    10430523
+ldrreg_c4_n256                   done    1165607
+ldrreg_c4_n2304                  done    10429263
+streb_c0_n256                    done    1167803
+streb_c0_n2304                   done    10432039
+streb_c4_n256                    done    1166211
+streb_c4_n2304                   done    10432393
+32 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 114, dma_cntr = 77
+vid_set_mode: 640x480 VGA with 1 framebuffers.

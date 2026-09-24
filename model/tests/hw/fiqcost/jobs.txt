@@ -1,0 +1,226 @@
+# FIQ handler op costs (ops after the acknowledge): P1 = copies skipped (4 = none); r7 adds over ITER samples
+out tests/hw/fiqcost/hw
+job nop_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job nop_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job nop_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job nop_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_nop.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run
+job strm_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job strm_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job strm_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job strm_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run
+job strre_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strre.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job strre_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strre.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job strre_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strre.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job strre_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_strre.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrl_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrl.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrl_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrl.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrl_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrl.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrl_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrl.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrm_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrm_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrm_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrm_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrm.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrram_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrram.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrram_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrram.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrram_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrram.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrram_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrram.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrreg_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrreg.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrreg_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrreg.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job ldrreg_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrreg.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job ldrreg_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_ldrreg.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run
+job streb_c0_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_streb.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 4
+read 0x1FF000 0x60
+run
+job streb_c0_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_streb.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 4
+read 0x1FF000 0x60
+run
+job streb_c4_n256 1000 1
+load 0 ../build/hw/arm/k_fiqcost_streb.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 256
+word 0x24 0
+read 0x1FF000 0x60
+run
+job streb_c4_n2304 1000 1
+load 0 ../build/hw/arm/k_fiqcost_streb.bin
+load 0x1FE000 ../build/hw/arm/stub.bin
+word 0x20 2304
+word 0x24 0
+read 0x1FF000 0x60
+run

@@ -1,0 +1,122 @@
+hwrun: 23:34:21 lock taken by pid 901217 for /home/skmp/projects/dreamster/wren7-rtl/build/hw/runner.elf
+Executing at <0xac010000>
+Sending execute command (0xac010000, console=1, cdfsredir=0)...executing
+
+--
+KallistiOS v2.1.0
+  Git revision: a02b86e8
+  Tue Mar  3 18:50:08 EET 2026
+  skmp@flora.localdomain:/opt/toolchains/dc/kos
+  sh-elf-gcc (GCC) 13.2.0
+thd: pre-emption enabled, HZ=100
+maple: active drivers:
+    Dreameye (Camera): Camera
+    Sound Input Peripheral: Microphone
+    PuruPuru (Vibration) Pack: JumpPack
+    VMU Driver: Clock, LCD, MemoryCard
+    Mouse Driver: Mouse
+    Keyboard Driver: Keyboard
+    Controller Driver: Controller
+    Lightgun: LightGun
+  DMA Buffer at ac06f820
+vid_set_mode: 640x480 VGA with 1 framebuffers.
+dc-load console support enabled
+maple: attached devices:
+  A0: Dreamcast Controller           (01000000: Controller)
+
+clear 2 MB wave RAM: 55781678 SH4 cycles
+samples 44100: 199488754 SH4 cycles
+m0_nop_n64                       done    416585
+m0_nop_n576                      done    2877415
+m0_rsh_n64                       done    344691
+m0_rsh_n576                      done    2229853
+m0_ldr_n64                       done    309243
+m0_ldr_n576                      done    1912745
+m0_str_n64                       done    271899
+m0_str_n576                      done    1574603
+r1_nop_n64                       done    416959
+r1_nop_n576                      done    2877809
+r1_rsh_n64                       done    344837
+r1_rsh_n576                      done    2230203
+r1_ldr_n64                       done    309737
+r1_ldr_n576                      done    1913195
+r1_str_n64                       done    272147
+r1_str_n576                      done    1574955
+r2_nop_n64                       done    417133
+r2_nop_n576                      done    2877981
+r2_rsh_n64                       done    346615
+r2_rsh_n576                      done    2241709
+r2_ldr_n64                       done    311129
+r2_ldr_n576                      done    1922373
+r2_str_n64                       done    272483
+r2_str_n576                      done    1575229
+r4_nop_n64                       done    417891
+r4_nop_n576                      done    2878815
+r4_rsh_n64                       done    348617
+r4_rsh_n576                      done    2256143
+r4_ldr_n64                       done    312957
+r4_ldr_n576                      done    1934243
+r4_str_n64                       done    273207
+r4_str_n576                      done    1576001
+r8_nop_n64                       done    418645
+r8_nop_n576                      done    2879469
+r8_rsh_n64                       done    357727
+r8_rsh_n576                      done    2330701
+r8_ldr_n64                       done    320997
+r8_ldr_n576                      done    2000089
+r8_str_n64                       done    273899
+r8_str_n576                      done    1576809
+r16_nop_n64                      done    418745
+r16_nop_n576                     done    2879601
+r16_rsh_n64                      done    364169
+r16_rsh_n576                     done    2390889
+r16_ldr_n64                      done    322469
+r16_ldr_n576                     done    2012649
+r16_str_n64                      done    273989
+r16_str_n576                     done    1576847
+r32_nop_n64                      done    425073
+r32_nop_n576                     done    2924971
+r32_rsh_n64                      done    420107
+r32_rsh_n576                     done    2880969
+r32_ldr_n64                      done    348575
+r32_ldr_n576                     done    2235605
+r32_str_n64                      done    277971
+r32_str_n576                     done    1601419
+r64_nop_n64                      done    431241
+r64_nop_n576                     done    2971333
+r64_rsh_n64                      done    431285
+r64_rsh_n576                     done    2971231
+r64_ldr_n64                      done    354779
+r64_ldr_n576                     done    2285039
+r64_str_n64                      done    281679
+r64_str_n576                     done    1626293
+r16e_nop_n64                     done    424597
+r16e_nop_n576                    done    2924405
+r16e_rsh_n64                     done    365167
+r16e_rsh_n576                    done    2391691
+r16e_ldr_n64                     done    323603
+r16e_ldr_n576                    done    2016167
+r16e_str_n64                     done    277563
+r16e_str_n576                    done    1600909
+w16o_nop_n64                     done    418753
+w16o_nop_n576                    done    2879703
+w16o_rsh_n64                     done    364459
+w16o_rsh_n576                    done    2391043
+w16o_ldr_n64                     done    322573
+w16o_ldr_n576                    done    2012453
+w16o_str_n64                     done    274013
+w16o_str_n576                    done    1576869
+w16e_nop_n64                     done    424505
+w16e_nop_n576                    done    2924495
+w16e_rsh_n64                     done    365147
+w16e_rsh_n576                    done    2391761
+w16e_ldr_n64                     done    323617
+w16e_ldr_n576                    done    2016009
+w16e_str_n64                     done    277503
+w16e_str_n576                    done    1600945
+88 jobs
+
+arch: exit return code 0
+arch: shutting down kernel
+maple: final stats -- device count = 23, vbl_cntr = 188, dma_cntr = 145
+vid_set_mode: 640x480 VGA with 1 framebuffers.

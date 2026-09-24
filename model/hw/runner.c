@@ -8,6 +8,13 @@
  *   load ADDR FILE               copy FILE into wave RAM at ARM address ADDR
  *   word ADDR VALUE              patch one 32-bit word (after the loads)
  *   read ADDR LEN                wave RAM region saved to DIR/NAME.bin after the run (regions concatenated)
+ *   rreg OFF N                   AICA register OFF read N times ~1 sample (23 us) apart, after the run with the ARM
+ *                                in reset and 5 ms of settling; the words are appended to DIR/NAME.bin after the reads
+ *   quiet                        before the loads: every channel keyed off and zeroed (20 ms), MPRO and MEMS cleared
+ *                                (first, so the previous job's DSP program cannot write the freshly loaded RAM)
+ *   areg OFF VALUE               AICA register write from the SH4 (0x700000 + OFF) after the loads, in order
+ *   sh4load MODE ADDR GAP        during the run the SH4 accesses G2 (1 read / 2 write wave RAM at ADDR, 3 read / 4
+ *                                write AICA register ADDR) at most every GAP SH4 cycles; count logged as sh4acc=N
  *   run                          execute the job
  *   chstate                      results.txt line "chstate EG:CA x64" (channel monitors, MSLC 0..63)
  *   samples N                    calibration: SH4 cycles over N AICA sample intervals (MCIPD bit 10), ARM stopped;
@@ -45,6 +52,11 @@ typedef struct {
     load_t l[8];
     word_t w[64];
     rd_t r[8];
+    rd_t g[8];   /* rreg: addr = register offset, len = count */
+    int ng;
+    int quiet, na;
+    uint32_t sh4mode, sh4addr, sh4gap;   /* SH4 G2 traffic during the run (sh4load) */
+    word_t a[1536];   /* AICA register writes (offset, value) from the SH4, after the loads */
 } job_t;
 
 typedef struct { char path[160]; uint8_t *data; size_t len; } img_t;
@@ -104,6 +116,31 @@ static int wait_bit(uint32_t mask, uint64_t max_cycles)
     return 0;
 }
 
+/* every channel keyed off and its registers zeroed, as caique's aica_quiet(); the ARM is already in reset */
+static void aica_quiet(void)
+{
+    for (int c = 0; c < 64; c++) {
+        g2_write_32(REG(0x80 * c), 0);
+        g2_write_32(REG(0x80 * c + 0x14), 0x1F);
+        if ((c & 7) == 7) g2_fifo_wait();
+    }
+    g2_write_32(REG(0), 0x8000);   /* KYONEX: key everything off */
+    for (uint32_t a = 0x3400; a < 0x3C00; a += 4) {   /* and an empty DSP program, MEMS cleared (+4 = bits 23:8) */
+        g2_write_32(REG(a), 0);
+        if ((a & 31) == 28) g2_fifo_wait();
+    }
+    for (uint32_t a = 0x4400; a < 0x4500; a += 8) g2_write_32(REG(a + 4), 0);
+    g2_fifo_wait();
+    timer_spin_sleep(20);
+    for (int c = 0; c < 64; c++)
+        for (int r = 0; r < 0x80; r += 4) {
+            g2_write_32(REG(0x80 * c + r), 0);
+            if ((r & 31) == 28) g2_fifo_wait();
+        }
+    g2_fifo_wait();
+}
+
+static uint32_t sh4acc;
 static char outdir[160];
 static FILE *results;
 
@@ -115,6 +152,7 @@ static int run_job(job_t *j)
     uint32_t reps = j->repeat < 1 ? 1 : (j->repeat > 16 ? 16 : j->repeat);
     for (uint32_t rep = 0; rep < reps; rep++) {
         arm_stop();
+        if (j->quiet) aica_quiet();
         if (j->clear) spu_memset_sq(0, 0, 0x200000);
         else for (uint32_t a = RES; a < RES + 0x100; a += 4) g2_write_32(RAM(a), 0);
         for (int i = 0; i < j->nl; i++) {
@@ -124,6 +162,10 @@ static int run_job(job_t *j)
             ram_write(j->l[i].addr, d, len);
         }
         for (int i = 0; i < j->nw; i++) g2_write_32(RAM(j->w[i].addr), j->w[i].val);
+        for (int i = 0; i < j->na; i++) {
+            g2_write_32(REG(j->a[i].addr), j->a[i].val);
+            if ((i & 7) == 7) g2_fifo_wait();
+        }
         g2_write_32(REG(MCIEB), 0x20);
         g2_write_32(REG(MCIRE), 0x7FF);
         g2_fifo_wait();
@@ -133,12 +175,21 @@ static int run_job(job_t *j)
         int old = irq_disable();
         const uint64_t t0 = perf_cntr_count(PRFC0);
         g2_write_32(REG(0x2C00), rst);
-        uint64_t t1;
+        uint64_t t1, tl = t0;
+        uint32_t nacc = 0;
+        volatile uint32_t *const sp = (volatile uint32_t *)((j->sh4mode <= 2 ? 0xA0800000u : 0xA0700000u) + j->sh4addr);
         for (;;) {
             t1 = perf_cntr_count(PRFC0);
             if (SB_ISTEXT & 2) break;
             if (t1 - t0 > tmo) { status = "timeout"; break; }
+            if (j->sh4mode && t1 - tl >= j->sh4gap) {   /* 1 read RAM, 2 write RAM, 3 read register, 4 write register */
+                if (j->sh4mode & 1) (void)*sp;
+                else *sp = nacc;
+                nacc++;
+                tl = t1;
+            }
         }
+        sh4acc = nacc;
         irq_restore(old);
         arm_stop();
         mcipd = g2_read_32(REG(MCIPD));
@@ -147,7 +198,7 @@ static int run_job(job_t *j)
         g2_fifo_wait();
         t[rep] = t1 - t0;
     }
-    if (j->nr) {
+    if (j->nr || j->ng) {
         char p[320];
         snprintf(p, sizeof p, ROOT "%s/%s.bin", outdir, j->name);
         FILE *f = fopen(p, "wb");
@@ -159,10 +210,19 @@ static int run_job(job_t *j)
             fwrite(buf, 1, j->r[i].len, f);
             free(buf);
         }
+        if (j->ng) timer_spin_sleep(5);   /* the ARM is in reset: only the channels and the DSP touch wave RAM */
+        for (int i = 0; i < j->ng; i++)
+            for (uint32_t k = 0; k < j->g[i].len; k++) {
+                const uint64_t w0 = perf_cntr_count(PRFC0);
+                const uint32_t v = g2_read_32(REG(j->g[i].addr));
+                fwrite(&v, 1, 4, f);
+                while (perf_cntr_count(PRFC0) - w0 < 4600) ;
+            }
         fclose(f);
     }
     fprintf(results, "%s %s %08lx", j->name, status, (unsigned long)mcipd);
     for (uint32_t rep = 0; rep < reps; rep++) fprintf(results, " %llu", (unsigned long long)t[rep]);
+    if (j->sh4mode) fprintf(results, " sh4acc=%lu", (unsigned long)sh4acc);
     fprintf(results, "\n");
     printf("%-32s %-7s %llu\n", j->name, status, (unsigned long long)t[reps - 1]);
     return 0;
@@ -207,6 +267,16 @@ int main(int argc, char **argv)
             job.repeat = strtoul(a3, 0, 0);
         } else if (!strcmp(cmd, "clear")) {
             job.clear = 1;
+        } else if (!strcmp(cmd, "sh4load") && n >= 4) {
+            job.sh4mode = strtoul(a1, 0, 0);
+            job.sh4addr = strtoul(a2, 0, 0);
+            job.sh4gap = strtoul(a3, 0, 0);
+        } else if (!strcmp(cmd, "quiet")) {
+            job.quiet = 1;
+        } else if (!strcmp(cmd, "areg") && n >= 3 && job.na < 1536) {
+            job.a[job.na].addr = strtoul(a1, 0, 0);
+            job.a[job.na].val = strtoul(a2, 0, 0);
+            job.na++;
         } else if (!strcmp(cmd, "load") && n >= 3 && job.nl < 8) {
             job.l[job.nl].addr = strtoul(a1, 0, 0);
             strncpy(job.l[job.nl].path, a2, sizeof job.l[0].path - 1);
@@ -219,6 +289,10 @@ int main(int argc, char **argv)
             job.r[job.nr].addr = strtoul(a1, 0, 0);
             job.r[job.nr].len = strtoul(a2, 0, 0);
             job.nr++;
+        } else if (!strcmp(cmd, "rreg") && n >= 3 && job.ng < 8) {
+            job.g[job.ng].addr = strtoul(a1, 0, 0);
+            job.g[job.ng].len = strtoul(a2, 0, 0) > 64 ? 64 : strtoul(a2, 0, 0);
+            job.ng++;
         } else if (!strcmp(cmd, "samples") && n >= 2) {
             /* every wait is bounded (1 ms per sample edge): a register that never changes must not hang the console
              * (2026-09-23: waiting for bit 10 to read back 0 after the MCIRE clear never returned) */
