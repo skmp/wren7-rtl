@@ -1,0 +1,15 @@
+# --------------------------------------------------------------------------
+# wren7-rtl - the fileset of the harness `wren7_rtl_test`: the v1 core (the
+# register file and the barrel shifter first, then the core), its AICA
+# wrapper, then the harness. Paths are relative to this project dir
+# (quartus/testing/wren7-rtl/), pointing up into ../../../rtl.
+# --------------------------------------------------------------------------
+
+# ---- core ----
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../rtl/v1/wren7_regfile.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../rtl/v1/wren7_shifter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../rtl/v1/wren7_core.sv
+
+# ---- the AICA's view (caique's ARM7DI port) + harness ----
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../rtl/v1/wren7_aica.sv
+set_global_assignment -name SYSTEMVERILOG_FILE wren7_rtl_test.sv

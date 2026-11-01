@@ -85,6 +85,8 @@ public:
      * synchroniser of irq_sync_stages cycles (0 = ISYNC high), checked at the end of each instruction. */
     void set_fiq(bool asserted) { fiq_in_ = asserted; }
     void set_irq(bool asserted) { irq_in_ = asserted; }
+    bool fiq_line() const { return fiq_in_; }   /* the inputs as last set (harnesses that mirror them, tb/core_tb) */
+    bool irq_line() const { return irq_in_; }
     int irq_sync_stages = 0;
 
     /* Perform exactly one bus cycle (one MCLK cycle plus its nWAIT stretch): drive it on the Arm7Bus, take the

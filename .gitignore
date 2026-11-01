@@ -1,3 +1,9 @@
 build/
 __pycache__/
 agents/
+# ---- Quartus build artifacts (quartus/testing/*) ----
+db/
+incremental_db/
+output_files/
+*.qws
+*.rpt
